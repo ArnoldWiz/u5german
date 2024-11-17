@@ -63,6 +63,25 @@ public class DaoProducto {
         }
         return respuesta;
     }
+    
+    public boolean existeProductoCodigo(String codigo) {
+        boolean respuesta = false;
+        String sql = "select nombre from producto where codigo = '" + codigo + "';";
+        Statement st;
+
+        try {
+            Connection cn = Conexion.conectar();
+            st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                respuesta = true;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al consultar producto: " + e);
+        }
+        return respuesta;
+    }
 
     public Producto buscarProductoPorCodigo(String codigo) {
         Producto producto = null;

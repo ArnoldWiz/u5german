@@ -1,6 +1,7 @@
 package vista;
 
 import conexion.Conexion;
+import daos.DaoProducto;
 import daos.DaoRegistrarVenta;
 import daos.DaoVentaPDF;
 import java.awt.Dimension;
@@ -309,6 +310,8 @@ public class Facturacion extends javax.swing.JInternalFrame {
 
     private void jButton_añadir_productoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_añadir_productoActionPerformed
 
+        DaoProducto p = new DaoProducto();
+
         //validar que ingrese una cantidad
         if (!txt_cant.getText().isEmpty()) {
             //validar que el usuario no ingrese caracteres no numericos
@@ -317,43 +320,45 @@ public class Facturacion extends javax.swing.JInternalFrame {
                 //validar que la cantidad sea mayor a cero
                 if (Integer.parseInt(txt_cant.getText()) > 0) {
                     cantidad = Integer.parseInt(txt_cant.getText());
-                    //ejecutar metodo para obtener datos del producto
-                    this.DatosDelProducto();
-                    //validar que la cantidad de productos seleccionado no sea mayor al stock de la base de datos
-                    if (cantidad <= cantidadProductoBBDD) {
+                    if (p.existeProductoCodigo(txt_code.getText().trim())) {
+                        this.DatosDelProducto();
+                        if (cantidad <= cantidadProductoBBDD) {
 
-                        subtotal = precioUnitario * cantidad;
-                        totalPagar = subtotal + iva + descuento;
+                            subtotal = precioUnitario * cantidad;
+                            totalPagar = subtotal + iva + descuento;
 
-                        //redondear decimales
-                        subtotal = (double) Math.round(subtotal * 100) / 100;
-                        iva = (double) Math.round(iva * 100) / 100;
-                        descuento = (double) Math.round(descuento * 100) / 100;
-                        totalPagar = (double) Math.round(totalPagar * 100) / 100;
+                            //redondear decimales
+                            subtotal = (double) Math.round(subtotal * 100) / 100;
+                            iva = (double) Math.round(iva * 100) / 100;
+                            descuento = (double) Math.round(descuento * 100) / 100;
+                            totalPagar = (double) Math.round(totalPagar * 100) / 100;
 
-                        //se crea un nuevo producto
-                        producto = new DetalleVenta(auxIdDetalle,//idDetalleVenta
-                                1, //idCabecera
-                                idProducto,
-                                nombre,
-                                Integer.parseInt(txt_cant.getText()),
-                                precioUnitario,
-                                subtotal,
-                                descuento,
-                                iva,
-                                totalPagar,
-                                1//estado
-                        );
-                        //añadir a la lista
-                        listaProductos.add(producto);
-                        auxIdDetalle++;
-                        txt_cant.setText("1");//limpiar el campo
-                        this.CalcularTotalPagar();
-                        txt_efectivo.setEnabled(true);
-                        jButton_calcular_cambio.setEnabled(true);
+                            //se crea un nuevo producto
+                            producto = new DetalleVenta(auxIdDetalle,//idDetalleVenta
+                                    1, //idCabecera
+                                    idProducto,
+                                    nombre,
+                                    Integer.parseInt(txt_cant.getText()),
+                                    precioUnitario,
+                                    subtotal,
+                                    descuento,
+                                    iva,
+                                    totalPagar,
+                                    1//estado
+                            );
+                            //añadir a la lista
+                            listaProductos.add(producto);
+                            auxIdDetalle++;
+                            txt_cant.setText("1");//limpiar el campo
+                            this.CalcularTotalPagar();
+                            txt_efectivo.setEnabled(true);
+                            jButton_calcular_cambio.setEnabled(true);
 
+                        } else {
+                            JOptionPane.showMessageDialog(null, "La cantidad supera el Stock");
+                        }
                     } else {
-                        JOptionPane.showMessageDialog(null, "La cantidad supera el Stock");
+                        JOptionPane.showMessageDialog(null, "No se encontro el producto");
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "La cantidad no puede ser cero (0), ni negativa");
@@ -611,23 +616,23 @@ public class Facturacion extends javax.swing.JInternalFrame {
         txt_total_pagar.setText(String.valueOf(totalPagarGeneral));
     }
 
-    //metodo para restar la cantidad (stock) de los productos vendidos
     private void RestarStockProductos(int idProducto, int cantidad) {
         int cantidadProductosBaseDeDatos = 0;
         try {
             Connection cn = Conexion.conectar();
-            String sql = "select idProducto, cantidad, minimo from producto where idProducto = '" + idProducto + "'";
+            String sql = "select * from producto where idProducto = '" + idProducto + "'";
             Statement st;
             st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 cantidadProductosBaseDeDatos = rs.getInt("cantidad");
+                if (rs.getInt("minimo") > rs.getInt("cantidad")) {
+                    JOptionPane.showMessageDialog(null, "Supero el minimo");
+                }
             }
-            if(rs.getInt("minimo")>rs.getInt("cantidad"))
-                JOptionPane.showMessageDialog(null, "Supero el minimo");
             cn.close();
         } catch (SQLException e) {
-            System.out.println("Error al restar cantidad 1, " + e);
+            System.out.println("Error al restar cantidad, " + e);
         }
 
         try {
