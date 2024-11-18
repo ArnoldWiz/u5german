@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JComboBox;
+import javax.swing.table.DefaultTableModel;
 import modelos.Categoria;
 
 /**
@@ -15,153 +16,348 @@ import modelos.Categoria;
  */
 public class DaoCategoria {
 
-    public JComboBox CargarComboCategorias(JComboBox jComboBox_categoria) {
+    public JComboBox<String> CargarComboCategorias(JComboBox<String> jComboBox_categoria) {
         Connection cn = Conexion.conectar();
-        String sql = "select * from categoria";
-        Statement st;
+        String sql = "SELECT * FROM categoria";
 
-        try {
+        try (Statement st = cn.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
 
-            st = cn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
             jComboBox_categoria.removeAllItems();
-            jComboBox_categoria.addItem("Seleccione categoria:");
+            jComboBox_categoria.addItem("Seleccione categoría:");
+
             while (rs.next()) {
                 if (rs.getInt("estado") == 1) {
                     jComboBox_categoria.addItem(rs.getString("descripcion"));
                 }
             }
-            cn.close();
 
         } catch (SQLException e) {
-            System.out.println("Error al cargar categorias");
+            System.out.println("Error al cargar categorías: " + e);
         }
         return jComboBox_categoria;
     }
 
     public int IdCategoria(String categoria) {
         int obtenerIdCategoriaCombo = 0;
-        String sql = "select * from categoria where descripcion = '" + categoria + "'";
-        Statement st;
-        try {
-            Connection cn = Conexion.conectar();
-            st = cn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            while (rs.next()) {
-                obtenerIdCategoriaCombo = rs.getInt("idCategoria");
+        String sql = "SELECT idCategoria FROM categoria WHERE descripcion = ?";
+        try (Connection cn = Conexion.conectar();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+
+            ps.setString(1, categoria);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    obtenerIdCategoriaCombo = rs.getInt("idCategoria");
+                }
             }
+
         } catch (SQLException e) {
-            System.out.println("Error al obener id categoria");
+            System.out.println("Error al obtener ID de categoría: " + e);
         }
         return obtenerIdCategoriaCombo;
     }
 
     public boolean guardar(Categoria objeto) {
         boolean respuesta = false;
-        Connection cn = conexion.Conexion.conectar();
+        String sql = "INSERT INTO categoria (idCategoria, descripcion, estado) VALUES (NULL, ?, ?)";
+        Connection cn = Conexion.conectar();
+
         try {
+            cn.setAutoCommit(false);
 
-            PreparedStatement consulta = cn.prepareStatement("insert into categoria values(?,?,?)");
-            consulta.setInt(1, 0);
-            consulta.setString(2, objeto.getDescripcion());
-            consulta.setInt(3, objeto.getEstado());
+            try (PreparedStatement ps = cn.prepareStatement(sql)) {
+                ps.setString(1, objeto.getDescripcion());
+                ps.setInt(2, objeto.getEstado());
 
-            if (consulta.executeUpdate() > 0) {
-                respuesta = true;
+                if (ps.executeUpdate() > 0) {
+                    respuesta = true;
+                }
             }
 
-            cn.close();
+            cn.commit();
 
         } catch (SQLException e) {
-            System.out.println("Error al guardar cartegoria: " + e);
+            System.out.println("Error al guardar categoría: " + e);
+            try {
+                if (cn != null) {
+                    cn.rollback();
+                }
+            } catch (SQLException rollbackEx) {
+                System.out.println("Error en rollback: " + rollbackEx);
+            }
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.setAutoCommit(true);
+                    cn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error al cerrar conexión: " + ex);
+            }
         }
-
         return respuesta;
     }
 
     public boolean existeCategoria(String categoria) {
         boolean respuesta = false;
-        String sql = "select descripcion from categoria where descripcion = '" + categoria + "';";
-        Statement st;
+        String sql = "SELECT descripcion FROM categoria WHERE descripcion = ?";
+        try (Connection cn = Conexion.conectar();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
 
-        try {
-            Connection cn = Conexion.conectar();
-            st = cn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            while (rs.next()) {
-                respuesta = true;
+            ps.setString(1, categoria);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    respuesta = true;
+                }
             }
 
         } catch (SQLException e) {
-            System.out.println("Error al consultar cartegoria: " + e);
+            System.out.println("Error al verificar existencia de categoría: " + e);
         }
         return respuesta;
     }
 
     public String buscarDescripcionCategoria(int categoria) {
         String descripcionEncontrada = null;
-        String sql = "SELECT descripcion FROM categoria WHERE idCategoria =?";
+        String sql = "SELECT descripcion FROM categoria WHERE idCategoria = ?";
 
-        try {
-            Connection cn = Conexion.conectar();
-            PreparedStatement ps = cn.prepareStatement(sql);
+        try (Connection cn = Conexion.conectar();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
 
             ps.setInt(1, categoria);
-
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                descripcionEncontrada = rs.getString("descripcion");
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    descripcionEncontrada = rs.getString("descripcion");
+                }
             }
 
         } catch (SQLException e) {
-            System.out.println("Error al consultar categoría: " + e);
+            System.out.println("Error al buscar descripción de categoría: " + e);
         }
-
         return descripcionEncontrada;
     }
 
     public boolean actualizar(Categoria objeto, int idCategoria, int estado) {
         boolean respuesta = false;
-        Connection cn = conexion.Conexion.conectar();
+        String sql = "UPDATE categoria SET descripcion = ?, estado = ? WHERE idCategoria = ?";
+        Connection cn = Conexion.conectar();
+
         try {
+            cn.setAutoCommit(false);
 
-            PreparedStatement consulta = cn.prepareStatement("update categoria set descripcion=?,estado=? where idCategoria ='" + idCategoria + "'");
-            consulta.setString(1, objeto.getDescripcion());
-            consulta.setInt(2, estado);
+            try (PreparedStatement ps = cn.prepareStatement(sql)) {
+                ps.setString(1, objeto.getDescripcion());
+                ps.setInt(2, estado);
+                ps.setInt(3, idCategoria);
 
-            if (consulta.executeUpdate() > 0) {
-                respuesta = true;
+                if (ps.executeUpdate() > 0) {
+                    respuesta = true;
+                }
             }
 
-            cn.close();
+            cn.commit();
 
         } catch (SQLException e) {
-            System.out.println("Error al actualizar cartegoria: " + e);
+            System.out.println("Error al actualizar categoría: " + e);
+            try {
+                if (cn != null) {
+                    cn.rollback();
+                }
+            } catch (SQLException rollbackEx) {
+                System.out.println("Error en rollback: " + rollbackEx);
+            }
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.setAutoCommit(true);
+                    cn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error al cerrar conexión: " + ex);
+            }
         }
-
         return respuesta;
     }
 
     public boolean eliminar(int idCategoria) {
         boolean respuesta = false;
+        String sql = "DELETE FROM categoria WHERE idCategoria = ?";
         Connection cn = Conexion.conectar();
+
         try {
+            cn.setAutoCommit(false);
 
-            PreparedStatement consulta = cn.prepareStatement(
-                    "delete from categoria where idCategoria ='" + idCategoria + "'");
-            consulta.executeUpdate();
+            try (PreparedStatement ps = cn.prepareStatement(sql)) {
+                ps.setInt(1, idCategoria);
 
-            if (consulta.executeUpdate() > 0) {
-                respuesta = true;
+                if (ps.executeUpdate() > 0) {
+                    respuesta = true;
+                }
             }
 
-            cn.close();
+            cn.commit();
 
         } catch (SQLException e) {
-            System.out.println("Error al eliminar cartegoria: " + e);
+            System.out.println("Error al eliminar categoría: " + e);
+            try {
+                if (cn != null) {
+                    cn.rollback();
+                }
+            } catch (SQLException rollbackEx) {
+                System.out.println("Error en rollback: " + rollbackEx);
+            }
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.setAutoCommit(true);
+                    cn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error al cerrar conexión: " + ex);
+            }
+        }
+        return respuesta;
+    }
+    
+    public void cargarTablaCategorias(DefaultTableModel model) {
+        Connection con = null;
+        String sql = "SELECT idCategoria, descripcion, estado FROM categoria";
+        Statement st;
+
+        try {
+            con = Conexion.conectar();
+            con.setAutoCommit(false);
+
+            st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            model.setRowCount(0);
+            while (rs.next()) {
+                Object fila[] = new Object[3];
+                for (int i = 0; i < 3; i++) {
+                    fila[i] = rs.getObject(i + 1);
+                }
+                model.addRow(fila);
+            }
+
+            con.commit();
+            con.close();
+
+        } catch (SQLException e) {
+            try {
+                if (con != null) {
+                    con.rollback();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error al hacer rollback: " + ex);
+            }
+            System.out.println("Error al cargar la tabla de categorías: " + e);
+        }
+    }
+
+    public void enviarDatosCategoriaSeleccionada(int idCategoria, Categoria categoria) {
+        Connection con = null;
+        try {
+            con = Conexion.conectar();
+            con.setAutoCommit(false);
+
+            PreparedStatement pst = con.prepareStatement(
+                    "SELECT * FROM categoria WHERE idCategoria = ?");
+            pst.setInt(1, idCategoria);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                categoria.setDescripcion(rs.getString("descripcion"));
+                categoria.setEstado(rs.getInt("estado"));
+            }
+
+            con.commit();
+            con.close();
+
+        } catch (SQLException e) {
+            try {
+                if (con != null) {
+                    con.rollback();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error al hacer rollback: " + ex);
+            }
+            System.out.println("Error al seleccionar categoría: " + e);
+        }
+    }
+    
+    public DefaultTableModel cargarTablaCategorias() {
+        Connection con = null;
+        DefaultTableModel model = new DefaultTableModel();
+        String sql = "SELECT idCategoria, descripcion, estado FROM categoria";
+        Statement st;
+
+        try {
+            con = Conexion.conectar();
+            con.setAutoCommit(false);
+
+            st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            model.addColumn("idCategoria");
+            model.addColumn("descripcion");
+            model.addColumn("estado");
+
+            while (rs.next()) {
+                Object fila[] = new Object[3];
+                for (int i = 0; i < 3; i++) {
+                    fila[i] = rs.getObject(i + 1);
+                }
+                model.addRow(fila);
+            }
+
+            con.commit();
+            con.close();
+        } catch (SQLException e) {
+            try {
+                if (con != null) {
+                    con.rollback();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error al hacer rollback: " + ex);
+            }
+            System.out.println("Error al llenar la tabla categorias: " + e);
         }
 
-        return respuesta;
+        return model;
+    }
+    
+    public Categoria obtenerCategoriaPorId(int idCategoria) {
+        Connection con = null;
+        Categoria categoria = null;
+
+        try {
+            con = Conexion.conectar();
+            con.setAutoCommit(false);
+
+            PreparedStatement pst = con.prepareStatement("SELECT * FROM categoria WHERE idCategoria = ?");
+            pst.setInt(1, idCategoria);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                categoria = new Categoria();
+                categoria.setIdCategoria(rs.getInt("idCategoria"));
+                categoria.setDescripcion(rs.getString("descripcion"));
+                categoria.setEstado(rs.getInt("estado"));
+            }
+
+            con.commit();
+            con.close();
+        } catch (SQLException e) {
+            try {
+                if (con != null) {
+                    con.rollback();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error al hacer rollback: " + ex);
+            }
+            System.out.println("Error al seleccionar categoria: " + e);
+        }
+
+        return categoria;
     }
 }

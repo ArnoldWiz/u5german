@@ -212,10 +212,8 @@ public class Registro extends javax.swing.JFrame {
                 usuario.setTipo(2);
             
             if (controlUsuario.guardar(usuario)) {
-                //JOptionPane.showMessageDialog(null, "Login Correcto...");
-                Login login = new Login();
-                login.setVisible(true);
                 this.dispose();
+                JOptionPane.showMessageDialog(null, "Se registro correctamente");
             } else {
                 JOptionPane.showMessageDialog(null, "Datos Incorrectos");
             }
@@ -242,8 +240,8 @@ public class Registro extends javax.swing.JFrame {
                 usuario.setTipo(2);
             
             if (controlUsuario.actualizar(usuario, idUs)) {
-                //JOptionPane.showMessageDialog(null, "Login Correcto...");
                 this.dispose();
+                JOptionPane.showMessageDialog(null, "Se actualizo correctamente");
             } else {
                 JOptionPane.showMessageDialog(null, "Datos Incorrectos");
             }

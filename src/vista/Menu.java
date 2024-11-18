@@ -327,5 +327,4 @@ public class Menu extends javax.swing.JFrame {
         String currentDateTime = sdf.format(new Date());
         lblHora.setText("FECHA: "+currentDateTime);
     }
-
 }

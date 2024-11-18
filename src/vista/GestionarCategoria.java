@@ -1,17 +1,8 @@
 package vista;
 
-import conexion.Conexion;
 import daos.DaoCategoria;
 import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import modelos.Categoria;
 
@@ -27,8 +18,9 @@ public class GestionarCategoria extends javax.swing.JInternalFrame {
         initComponents();
         this.setSize(new Dimension(600, 400));
         this.setTitle("Gestionar Categorias");
-        //Cargar tabla
-        this.CargarTablaCategorias();
+        DaoCategoria daoCategoria = new DaoCategoria();
+        DefaultTableModel model = daoCategoria.cargarTablaCategorias();
+        jTable_categorias.setModel(model);
     }
 
     /**
@@ -111,6 +103,11 @@ public class GestionarCategoria extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTable_categorias.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable_categoriasMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable_categorias);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 330, 230));
@@ -147,9 +144,9 @@ public class GestionarCategoria extends javax.swing.JInternalFrame {
 
     private void jButton_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_actualizarActionPerformed
         if (!txt_descripcion.getText().isEmpty()) {
-            int estado=0;
-            if(btnActivo.isSelected()){
-                estado=1;
+            int estado = 0;
+            if (btnActivo.isSelected()) {
+                estado = 1;
             }
             Categoria categoria = new Categoria();
             DaoCategoria controlCategoria = new DaoCategoria();
@@ -157,7 +154,9 @@ public class GestionarCategoria extends javax.swing.JInternalFrame {
             if (controlCategoria.actualizar(categoria, idCategoria, estado)) {
                 JOptionPane.showMessageDialog(null, "Categoria Actulizada");
                 txt_descripcion.setText("");
-                this.CargarTablaCategorias();
+                DaoCategoria daoCategoria = new DaoCategoria();
+                DefaultTableModel model = daoCategoria.cargarTablaCategorias();
+                jTable_categorias.setModel(model);
             } else {
                 JOptionPane.showMessageDialog(null, "Error al actualizar Categoria");
             }
@@ -165,6 +164,16 @@ public class GestionarCategoria extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Seleccione una categoria");
         }
     }//GEN-LAST:event_jButton_actualizarActionPerformed
+
+    private void jTable_categoriasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_categoriasMouseClicked
+        // TODO add your handling code here:
+        int fila_point = jTable_categorias.rowAtPoint(evt.getPoint());
+        if (fila_point > -1) {
+            int columna_point = 0; // Suponiendo que el idCategoria está en la primera columna (índice 0)
+            idCategoria = (int) jTable_categorias.getValueAt(fila_point, columna_point);  // Obtener el idCategoria de la fila
+            EnviarDatosCategoriaSeleccionada(idCategoria);  // Llamar al método para cargar los datos
+        }
+    }//GEN-LAST:event_jTable_categoriasMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -181,65 +190,19 @@ public class GestionarCategoria extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txt_descripcion;
     // End of variables declaration//GEN-END:variables
 
-    private void CargarTablaCategorias() {
-        Connection con = Conexion.conectar();
-        DefaultTableModel model = new DefaultTableModel();
-        String sql = "select idCategoria, descripcion, estado from categoria";
-        Statement st;
-        try {
-            st = con.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            GestionarCategoria.jTable_categorias = new JTable(model);
-            GestionarCategoria.jScrollPane1.setViewportView(GestionarCategoria.jTable_categorias);
-
-            model.addColumn("idCategoria");
-            model.addColumn("descripcion");
-            model.addColumn("estado");
-
-            while (rs.next()) {
-                Object fila[] = new Object[3];
-                for (int i = 0; i < 3; i++) {
-                    fila[i] = rs.getObject(i + 1);
-                }
-                model.addRow(fila);
-            }
-            con.close();
-        } catch (SQLException e) {
-            System.out.println("Error al llenar la tabla categorias: " + e);
-        }
-        jTable_categorias.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int fila_point = jTable_categorias.rowAtPoint(e.getPoint());
-                int columna_point = 0;
-
-                if (fila_point > -1) {
-                    idCategoria = (int) model.getValueAt(fila_point, columna_point);
-                    EnviarDatosCategoriaSeleccionada(idCategoria);
-                }
-            }
-        });
-    }
-
     private void EnviarDatosCategoriaSeleccionada(int idCategoria) {
-        try {
-            Connection con = Conexion.conectar();
-            PreparedStatement pst = con.prepareStatement(
-                    "select * from categoria where idCategoria = '" + idCategoria + "'");
-            ResultSet rs = pst.executeQuery();
-            if (rs.next()) {
-                txt_descripcion.setText(rs.getString("descripcion"));
-                if(rs.getInt("estado")==1){
-                    btnActivo.setSelected(true);
-                    btnInactivo.setSelected(false);
-                }else{
-                    btnActivo.setSelected(false);
-                    btnInactivo.setSelected(true);
-                }
+        DaoCategoria daoCategoria = new DaoCategoria();
+        Categoria categoria = daoCategoria.obtenerCategoriaPorId(idCategoria);
+
+        if (categoria != null) {
+            txt_descripcion.setText(categoria.getDescripcion());
+            if (categoria.getEstado() == 1) {
+                btnActivo.setSelected(true);
+                btnInactivo.setSelected(false);
+            } else {
+                btnActivo.setSelected(false);
+                btnInactivo.setSelected(true);
             }
-            con.close();
-        } catch (SQLException e) {
-            System.out.println("Error al seleccionar categoria: " + e);
         }
     }
 }

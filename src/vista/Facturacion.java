@@ -68,7 +68,6 @@ public class Facturacion extends javax.swing.JInternalFrame {
 
         txt_subtotal.setText("0.0");
         txt_iva.setText("0.0");
-        txt_descuento.setText("0.0");
         txt_total_pagar.setText("0.0");
 
         //insertar imagen en nuestro JLabel
@@ -134,13 +133,11 @@ public class Facturacion extends javax.swing.JInternalFrame {
         jTable_productos = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         txt_subtotal = new javax.swing.JTextField();
-        txt_descuento = new javax.swing.JTextField();
         txt_iva = new javax.swing.JTextField();
         txt_total_pagar = new javax.swing.JTextField();
         txt_efectivo = new javax.swing.JTextField();
@@ -230,17 +227,13 @@ public class Facturacion extends javax.swing.JInternalFrame {
         jLabel5.setText("Subtotal:");
         jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, -1));
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel6.setText("Descuento:");
-        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, -1, -1));
-
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel7.setText("Iva:");
-        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, -1, -1));
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, -1, -1));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setText("Total a pagar:");
-        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, -1, -1));
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, -1, -1));
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel9.setText("Efectivo:");
@@ -254,17 +247,13 @@ public class Facturacion extends javax.swing.JInternalFrame {
         txt_subtotal.setEnabled(false);
         jPanel2.add(txt_subtotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 20, 120, -1));
 
-        txt_descuento.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        txt_descuento.setEnabled(false);
-        jPanel2.add(txt_descuento, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 50, 120, -1));
-
         txt_iva.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         txt_iva.setEnabled(false);
-        jPanel2.add(txt_iva, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 80, 120, -1));
+        jPanel2.add(txt_iva, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 50, 120, -1));
 
         txt_total_pagar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         txt_total_pagar.setEnabled(false);
-        jPanel2.add(txt_total_pagar, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, 120, -1));
+        jPanel2.add(txt_total_pagar, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 80, 120, -1));
 
         txt_efectivo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jPanel2.add(txt_efectivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 150, 120, -1));
@@ -477,7 +466,6 @@ public class Facturacion extends javax.swing.JInternalFrame {
                     if (controlVenta.guardarDetalle(detalleVenta)) {
                         txt_subtotal.setText("0.0");
                         txt_iva.setText("0.0");
-                        txt_descuento.setText("0.0");
                         txt_total_pagar.setText("0.0");
                         txt_efectivo.setText("");
                         txt_cambio.setText("0.0");
@@ -514,7 +502,6 @@ public class Facturacion extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -527,7 +514,6 @@ public class Facturacion extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txt_cambio;
     private javax.swing.JTextField txt_cant;
     private javax.swing.JTextField txt_code;
-    private javax.swing.JTextField txt_descuento;
     private javax.swing.JTextField txt_efectivo;
     private javax.swing.JTextField txt_iva;
     private javax.swing.JTextField txt_subtotal;
@@ -543,9 +529,6 @@ public class Facturacion extends javax.swing.JInternalFrame {
         }
     }
 
-    /*
-        Metodo para validar que el usuario no ingrese caracteres no numericos
-     */
     private boolean validarDouble(String valor) {
         try {
             double num = Double.parseDouble(valor);
@@ -555,42 +538,52 @@ public class Facturacion extends javax.swing.JInternalFrame {
         }
     }
 
-    /*
-        Metodo para mostrar los datos del producto seleccionado
-     */
     private void DatosDelProducto() {
+        Connection cn = null;
         try {
+            cn = Conexion.conectar();
+            cn.setAutoCommit(false);
+
             String sql = "select * from producto where codigo = " + txt_code.getText().trim();
-            Connection cn = Conexion.conectar();
-            Statement st;
-            st = cn.createStatement();
+            Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
+
             while (rs.next()) {
                 idProducto = rs.getInt("idProducto");
                 nombre = rs.getString("nombre");
                 cantidadProductoBBDD = rs.getInt("cantidad");
                 precioUnitario = rs.getDouble("precio");
                 porcentajeIva = rs.getInt("iva");
-                this.CalcularIva(precioUnitario);//calcula y retorna el iva
+                this.CalcularIva(precioUnitario);
             }
+            cn.commit();
 
         } catch (SQLException e) {
-            System.out.println("Error al obtener datos del producto, " + e);
+            System.out.println("Error al obtener datos del producto: " + e);
+            try {
+                if (cn != null) {
+                    cn.rollback();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error al hacer rollback: " + ex);
+            }
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.setAutoCommit(true);
+                    cn.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Error al cerrar la conexión: " + e);
+            }
         }
     }
 
-    /*
-        Metodo para calcular iva
-     */
     private double CalcularIva(double precio) {
-        int p_iva = porcentajeIva;
         iva = (precio * cantidad) * 0.16;
         return iva;
     }
 
-    /*
-    Metodo para calcular el total a pagar de todos los productos agregados
-     */
     private void CalcularTotalPagar() {
         subtotalGeneral = 0;
         descuentoGeneral = 0;
@@ -599,53 +592,64 @@ public class Facturacion extends javax.swing.JInternalFrame {
 
         for (DetalleVenta elemento : listaProductos) {
             subtotalGeneral += elemento.getSubTotal();
-            descuentoGeneral += elemento.getDescuento();
             ivaGeneral += elemento.getIva();
             totalPagarGeneral += elemento.getTotalPagar();
         }
-        //redondear decimales
+        
         subtotalGeneral = (double) Math.round(subtotalGeneral * 100) / 100;
         ivaGeneral = (double) Math.round(ivaGeneral * 100) / 100;
-        descuentoGeneral = (double) Math.round(descuentoGeneral * 100) / 100;
         totalPagarGeneral = (double) Math.round(totalPagarGeneral * 100) / 100;
 
-        //enviar datos a la vista
         txt_subtotal.setText(String.valueOf(subtotalGeneral));
         txt_iva.setText(String.valueOf(ivaGeneral));
-        txt_descuento.setText(String.valueOf(descuentoGeneral));
         txt_total_pagar.setText(String.valueOf(totalPagarGeneral));
     }
 
     private void RestarStockProductos(int idProducto, int cantidad) {
+        Connection cn = null;
         int cantidadProductosBaseDeDatos = 0;
         try {
-            Connection cn = Conexion.conectar();
-            String sql = "select * from producto where idProducto = '" + idProducto + "'";
-            Statement st;
-            st = cn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            while (rs.next()) {
+            cn = Conexion.conectar();
+            cn.setAutoCommit(false);
+
+            String sql = "SELECT cantidad, minimo FROM producto WHERE idProducto = ?";
+            PreparedStatement pst = cn.prepareStatement(sql);
+            pst.setInt(1, idProducto);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
                 cantidadProductosBaseDeDatos = rs.getInt("cantidad");
-                if (rs.getInt("minimo") > rs.getInt("cantidad")) {
-                    JOptionPane.showMessageDialog(null, "Supero el minimo");
+                if (rs.getInt("minimo") > cantidadProductosBaseDeDatos) {
+                    JOptionPane.showMessageDialog(null, "Se ha superado el mínimo de stock.");
+                    cn.rollback();
+                    return;
                 }
             }
-            cn.close();
-        } catch (SQLException e) {
-            System.out.println("Error al restar cantidad, " + e);
-        }
-
-        try {
-            Connection cn = Conexion.conectar();
-            PreparedStatement consulta = cn.prepareStatement("update producto set cantidad=? where idProducto = '" + idProducto + "'");
+            String updateSql = "UPDATE producto SET cantidad = ? WHERE idProducto = ?";
+            PreparedStatement updateStmt = cn.prepareStatement(updateSql);
             int cantidadNueva = cantidadProductosBaseDeDatos - cantidad;
-            consulta.setInt(1, cantidadNueva);
-            if (consulta.executeUpdate() > 0) {
-                //System.out.println("Todo bien");
+            updateStmt.setInt(1, cantidadNueva);
+            updateStmt.setInt(2, idProducto);
+            if (updateStmt.executeUpdate() > 0) {
+                cn.commit();
             }
-            cn.close();
         } catch (SQLException e) {
-            System.out.println("Error al restar cantidad 2, " + e);
+            try {
+                if (cn != null) {
+                    cn.rollback();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error al hacer rollback: " + ex);
+            }
+            System.out.println("Error al restar cantidad de producto: " + e);
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.setAutoCommit(true);
+                    cn.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Error al cerrar la conexión: " + e);
+            }
         }
     }
 }

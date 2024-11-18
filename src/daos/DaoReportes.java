@@ -3,7 +3,6 @@ package daos;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Image;
@@ -11,9 +10,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import conexion.Conexion;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,6 +26,10 @@ public class DaoReportes {
 
     public void ReporteVentasConDetalles(Date fechaInicio, Date fechaFin) {
         Document documento = new Document();
+        Connection cn = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+
         try {
             SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
             String ruta = "src/reportes/reporte " + formato.format(fechaInicio) + " a " + formato.format(fechaFin) + ".pdf";
@@ -53,31 +54,44 @@ public class DaoReportes {
             tablaCabecera.addCell("Tot. Pagar");
             tablaCabecera.addCell("Fecha Venta");
             tablaCabecera.addCell("Estado");
-
-            Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement(
-                    "SELECT cv.idVenta, cv.valorPagar, cv.fechaVenta FROM venta cv WHERE cv.fechaVenta BETWEEN ? AND ?"
-            );
+            
+            cn = Conexion.conectar();
+            
+            String sql = "SELECT cv.idVenta, cv.valorPagar, cv.fechaVenta FROM venta cv WHERE cv.fechaVenta BETWEEN ? AND ?";
+            pst = cn.prepareStatement(sql);
             pst.setDate(1, new java.sql.Date(fechaInicio.getTime()));
             pst.setDate(2, new java.sql.Date(fechaFin.getTime()));
 
-            ResultSet rs = pst.executeQuery();
+            rs = pst.executeQuery();
             while (rs.next()) {
                 String idVenta = rs.getString("idVenta");
+                String valorPagar = String.format("%.2f", rs.getDouble("valorPagar")); 
+                String fechaVenta = rs.getString("fechaVenta");
+
                 tablaCabecera.addCell(idVenta);
-                tablaCabecera.addCell(rs.getString("valorPagar"));
-                tablaCabecera.addCell(rs.getString("fechaVenta"));
-                tablaCabecera.addCell("Completado"); // Ejemplo de estado
-
+                tablaCabecera.addCell(valorPagar);
+                tablaCabecera.addCell(fechaVenta);
+                tablaCabecera.addCell("Completado");
             }
-
-            rs.close();
-            pst.close();
             documento.add(tablaCabecera);
 
-            documento.close();
         } catch (Exception e) {
-            System.out.println("Error: " + e);
+            System.out.println("Error al generar el reporte de ventas: " + e);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pst != null) {
+                    pst.close();
+                }
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error al cerrar recursos: " + ex);
+            }
         }
+        documento.close();
     }
 }
