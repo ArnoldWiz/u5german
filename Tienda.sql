@@ -160,14 +160,12 @@ DELIMITER $$
 
 CREATE PROCEDURE InsertarCliente(
     IN p_nombre VARCHAR(50),
-    IN p_apellido VARCHAR(50),
     IN p_telefono VARCHAR(15),
-    IN p_correo VARCHAR(100),
     IN p_estado INT
 )
 BEGIN
-    INSERT INTO clientes (nombre, apellido, telefono, correo, estado)
-    VALUES (p_nombre, p_apellido, p_telefono, p_correo, p_estado);
+    INSERT INTO clientes (nombre, telefono, estado)
+    VALUES (p_nombre, p_telefono, p_estado);
 END $$
 
 DELIMITER ;
@@ -254,7 +252,6 @@ DROP VIEW IF EXISTS reporte_ventas_empleado;
 SELECT * FROM reporte_ventas_mes
 WHERE MONTH(fecha) = 6 and year(fecha)=2024 
 ORDER BY fecha DESC;
-use tienda;
 
 CREATE VIEW reporte_ventas_empleado AS
 SELECT 

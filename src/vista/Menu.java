@@ -60,6 +60,9 @@ public class Menu extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem_nuevo_usuario = new javax.swing.JMenuItem();
         jMenuItem_gestionar_usuario = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem_nuevo_usuario1 = new javax.swing.JMenuItem();
+        jMenuItem_gestionar_usuario1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem3_nuevo_producto = new javax.swing.JMenuItem();
         jMenuItem_gestionar_producto = new javax.swing.JMenuItem();
@@ -116,6 +119,34 @@ public class Menu extends javax.swing.JFrame {
         jMenu1.add(jMenuItem_gestionar_usuario);
 
         jMenuBar1.add(jMenu1);
+
+        jMenu3.setText("Cliente");
+        jMenu3.setFont(new java.awt.Font("Segoe UI Variable", 1, 20)); // NOI18N
+        jMenu3.setPreferredSize(new java.awt.Dimension(150, 50));
+
+        jMenuItem_nuevo_usuario1.setFont(new java.awt.Font("Segoe UI Variable", 1, 14)); // NOI18N
+        jMenuItem_nuevo_usuario1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/nuevo.png"))); // NOI18N
+        jMenuItem_nuevo_usuario1.setText("Nuevo Cliente");
+        jMenuItem_nuevo_usuario1.setPreferredSize(new java.awt.Dimension(180, 30));
+        jMenuItem_nuevo_usuario1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem_nuevo_usuario1ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem_nuevo_usuario1);
+
+        jMenuItem_gestionar_usuario1.setFont(new java.awt.Font("Segoe UI Variable", 1, 14)); // NOI18N
+        jMenuItem_gestionar_usuario1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/configuraciones.png"))); // NOI18N
+        jMenuItem_gestionar_usuario1.setText("Gestionar Clientes");
+        jMenuItem_gestionar_usuario1.setPreferredSize(new java.awt.Dimension(180, 30));
+        jMenuItem_gestionar_usuario1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem_gestionar_usuario1ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem_gestionar_usuario1);
+
+        jMenuBar1.add(jMenu3);
 
         jMenu2.setText("Producto");
         jMenu2.setFont(new java.awt.Font("Segoe UI Variable", 1, 20)); // NOI18N
@@ -335,6 +366,20 @@ public class Menu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem_empleado1ActionPerformed
 
+    private void jMenuItem_nuevo_usuario1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_nuevo_usuario1ActionPerformed
+        // TODO add your handling code here:
+        Cliente interProducto = new Cliente(null);
+        jDesktopPane_menu.add(interProducto);
+        interProducto.setVisible(true);
+    }//GEN-LAST:event_jMenuItem_nuevo_usuario1ActionPerformed
+
+    private void jMenuItem_gestionar_usuario1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_gestionar_usuario1ActionPerformed
+        // TODO add your handling code here:
+        GestionarCliente interProducto = new GestionarCliente();
+        jDesktopPane_menu.add(interProducto);
+        interProducto.setVisible(true);
+    }//GEN-LAST:event_jMenuItem_gestionar_usuario1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -374,6 +419,7 @@ public class Menu extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenu jMenu8;
@@ -387,9 +433,11 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem_gestionar_categorias;
     private javax.swing.JMenuItem jMenuItem_gestionar_producto;
     private javax.swing.JMenuItem jMenuItem_gestionar_usuario;
+    private javax.swing.JMenuItem jMenuItem_gestionar_usuario1;
     private javax.swing.JMenuItem jMenuItem_mes;
     private javax.swing.JMenuItem jMenuItem_nueva_categoria;
     private javax.swing.JMenuItem jMenuItem_nuevo_usuario;
+    private javax.swing.JMenuItem jMenuItem_nuevo_usuario1;
     private javax.swing.JMenuItem jMenuItem_ver_historial;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblHora;
