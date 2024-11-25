@@ -68,6 +68,9 @@ public class Menu extends javax.swing.JFrame {
         jMenuItem_gestionar_categorias = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
         jMenuItem_ver_historial = new javax.swing.JMenuItem();
+        jMenuItem_mes = new javax.swing.JMenuItem();
+        jMenuItem_empleado = new javax.swing.JMenuItem();
+        jMenuItem_empleado1 = new javax.swing.JMenuItem();
         jMenu8 = new javax.swing.JMenu();
         jMenuItem_cerrar_sesion = new javax.swing.JMenuItem();
 
@@ -184,6 +187,39 @@ public class Menu extends javax.swing.JFrame {
         });
         jMenu7.add(jMenuItem_ver_historial);
 
+        jMenuItem_mes.setFont(new java.awt.Font("Segoe UI Variable", 1, 14)); // NOI18N
+        jMenuItem_mes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/lupa.png"))); // NOI18N
+        jMenuItem_mes.setText("Mes");
+        jMenuItem_mes.setPreferredSize(new java.awt.Dimension(150, 30));
+        jMenuItem_mes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem_mesActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem_mes);
+
+        jMenuItem_empleado.setFont(new java.awt.Font("Segoe UI Variable", 1, 14)); // NOI18N
+        jMenuItem_empleado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/lupa.png"))); // NOI18N
+        jMenuItem_empleado.setText("Empleado");
+        jMenuItem_empleado.setPreferredSize(new java.awt.Dimension(150, 30));
+        jMenuItem_empleado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem_empleadoActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem_empleado);
+
+        jMenuItem_empleado1.setFont(new java.awt.Font("Segoe UI Variable", 1, 14)); // NOI18N
+        jMenuItem_empleado1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/lupa.png"))); // NOI18N
+        jMenuItem_empleado1.setText("Trimestres");
+        jMenuItem_empleado1.setPreferredSize(new java.awt.Dimension(150, 30));
+        jMenuItem_empleado1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem_empleado1ActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem_empleado1);
+
         jMenuBar1.add(jMenu7);
 
         jMenu8.setText("Cerrar Sesión");
@@ -258,13 +294,46 @@ public class Menu extends javax.swing.JFrame {
 
     private void jMenuItem_ver_historialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_ver_historialActionPerformed
         if (tipo_usuario == 0) {
-            Historial interGraficas = new Historial();
+            Reportes interGraficas = new Reportes();
             jDesktopPane_menu.add(interGraficas);
             interGraficas.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(null, "No tienes permiso para hacer esto");
         }
     }//GEN-LAST:event_jMenuItem_ver_historialActionPerformed
+
+    private void jMenuItem_mesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_mesActionPerformed
+        // TODO add your handling code here:
+        if (tipo_usuario == 0) {
+            ReporteMes interGraficas = new ReporteMes();
+            jDesktopPane_menu.add(interGraficas);
+            interGraficas.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "No tienes permiso para hacer esto");
+        }
+    }//GEN-LAST:event_jMenuItem_mesActionPerformed
+
+    private void jMenuItem_empleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_empleadoActionPerformed
+        // TODO add your handling code here:
+        if (tipo_usuario == 0) {
+            ReporteEmpleado interGraficas = new ReporteEmpleado();
+            jDesktopPane_menu.add(interGraficas);
+            interGraficas.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "No tienes permiso para hacer esto");
+        }
+    }//GEN-LAST:event_jMenuItem_empleadoActionPerformed
+
+    private void jMenuItem_empleado1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_empleado1ActionPerformed
+        // TODO add your handling code here:
+        if (tipo_usuario == 0) {
+            ReporteTrimestres interGraficas = new ReporteTrimestres();
+            jDesktopPane_menu.add(interGraficas);
+            interGraficas.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "No tienes permiso para hacer esto");
+        }
+    }//GEN-LAST:event_jMenuItem_empleado1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -313,9 +382,12 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3_nuevo_producto;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem_cerrar_sesion;
+    private javax.swing.JMenuItem jMenuItem_empleado;
+    private javax.swing.JMenuItem jMenuItem_empleado1;
     private javax.swing.JMenuItem jMenuItem_gestionar_categorias;
     private javax.swing.JMenuItem jMenuItem_gestionar_producto;
     private javax.swing.JMenuItem jMenuItem_gestionar_usuario;
+    private javax.swing.JMenuItem jMenuItem_mes;
     private javax.swing.JMenuItem jMenuItem_nueva_categoria;
     private javax.swing.JMenuItem jMenuItem_nuevo_usuario;
     private javax.swing.JMenuItem jMenuItem_ver_historial;
