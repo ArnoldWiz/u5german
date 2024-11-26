@@ -27,7 +27,6 @@ VALUES
 ('Héctor', 'Gómez', 'hgomez', SHA2('hector123', 256), '5559012345', 1),
 ('Sofía', 'Morales', 'smorales', SHA2('sofia123', 256), '5550123456', 1);
 
-
 CREATE TABLE clientes (
     idCliente INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -47,7 +46,6 @@ VALUES
 ('FinTech', '5567890123', 1),
 ('GlobalPro', '6647651234', 1),
 ('AquaPur', '7223456789', 1);
-
 
 create table categoria(
 idCategoria int (11) auto_increment primary key,
@@ -157,7 +155,6 @@ CONSTRAINT fk_idVenta FOREIGN KEY (idVenta) REFERENCES venta(idVenta) ON DELETE 
 );
 
 DELIMITER $$
-
 CREATE PROCEDURE InsertarCliente(
     IN p_nombre VARCHAR(50),
     IN p_telefono VARCHAR(15),
@@ -167,11 +164,43 @@ BEGIN
     INSERT INTO clientes (nombre, telefono, estado)
     VALUES (p_nombre, p_telefono, p_estado);
 END $$
-
 DELIMITER ;
 
 DELIMITER $$
+CREATE PROCEDURE UpdateCliente(
+	in p_nombre varchar(50),
+    IN p_telefono VARCHAR(15),
+    IN p_estado INT
+)
+BEGIN
+    update cliente set telefono=p_telefono, estado=p_estado where nombre=p_nombre;
+END $$
+DELIMITER ;
 
+DELIMITER $$
+CREATE PROCEDURE RestaurarCliente(
+    IN p_nombre VARCHAR(50)
+)
+BEGIN
+    UPDATE clientes 
+    SET estado = 1 
+    WHERE nombre = p_nombre;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE EliminarCliente(
+    IN p_nombre VARCHAR(50)
+)
+BEGIN
+    UPDATE clientes 
+    SET estado = 0 
+    WHERE nombre = p_nombre;
+END $$
+DELIMITER ;
+
+
+DELIMITER $$
 CREATE PROCEDURE InsertarVentasSimuladas(
     IN cantidadVentas INT
 )
@@ -290,7 +319,7 @@ CREATE TABLE auditoria_ventas (
     idVenta INT,
     accion VARCHAR(10),
     fechaCambio DATETIME,
-    idUsuario INT,
+    idUsuario varchar(50),
     detalles VARCHAR(255)
 );
 DELIMITER $$
@@ -318,7 +347,7 @@ BEGIN
     SET usuario_id = (SELECT idUsuario FROM usuario WHERE usuario = USER());
     SET detalles_cambio = CONCAT('Venta actualizada: ', OLD.idVenta, ' a ', NEW.idVenta);
     INSERT INTO auditoria_ventas (idVenta, accion, fechaCambio, idUsuario, detalles)
-    VALUES (NEW.idVenta, 'UPDATE', NOW(), usuario_id, detalles_cambio);
+    VALUES (NEW.idVenta, 'UPDATE', NOW(), current_user(), detalles_cambio);
 END $$
 DELIMITER ;
 
@@ -332,9 +361,10 @@ BEGIN
     SET usuario_id = (SELECT idUsuario FROM usuario WHERE usuario = USER());
     SET detalles_cambio = CONCAT('Venta eliminada: ', OLD.idVenta);
     INSERT INTO auditoria_ventas (idVenta, accion, fechaCambio, idUsuario, detalles)
-    VALUES (OLD.idVenta, 'DELETE', NOW(), usuario_id, detalles_cambio);
+    VALUES (OLD.idVenta, 'DELETE', NOW(), current_user(), detalles_cambio);
 END $$
 DELIMITER ;
+
 
 DELIMITER $$
 CREATE TRIGGER validacion_producto_insert
@@ -387,7 +417,13 @@ BEGIN
 END $$
 DELIMITER ;
 
+select calcular_cantidad_productos(3);
 
+select * from auditoria_ventas;
+select * from venta;
+use ventas;
+
+update venta set valorPagar=20 where idVenta=6;
 
 
 

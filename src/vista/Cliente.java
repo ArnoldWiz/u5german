@@ -1,10 +1,7 @@
 package vista;
 
-import daos.DaoCategoria;
 import daos.DaoCliente;
-import daos.DaoProducto;
 import java.awt.Dimension;
-import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,12 +15,15 @@ public class Cliente extends javax.swing.JInternalFrame {
         this.setSize(new Dimension(400, 200));
         this.setTitle("Nuevo Cliente");
 
+        btnEliminar.setVisible(false);
         btnActualizar.setVisible(false);
         if (pro != null) {
             txt_Nombre.setText("" + pro.getNombre());
+            txt_Nombre.setEditable(false);
             txt_Telefono.setText(pro.getTelefono());
             btnActualizar.setVisible(true);
             jButton_Guardar.setVisible(false);
+            btnEliminar.setVisible(true);
         }
     }
 
@@ -36,6 +36,7 @@ public class Cliente extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btnEliminar = new javax.swing.JButton();
         txt_Nombre = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -48,6 +49,15 @@ public class Cliente extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btnEliminar.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 120, -1, -1));
         getContentPane().add(txt_Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 30, 170, 30));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI Variable", 1, 14)); // NOI18N
@@ -68,7 +78,7 @@ public class Cliente extends javax.swing.JInternalFrame {
                 btnActualizarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 120, -1, 30));
+        getContentPane().add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 120, -1, 30));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI Variable", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -87,7 +97,7 @@ public class Cliente extends javax.swing.JInternalFrame {
                 jButton_GuardarActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton_Guardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 120, 120, 30));
+        getContentPane().add(jButton_Guardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 120, 30));
 
         jLabel_wallpaper.setForeground(new java.awt.Color(255, 255, 255));
         jLabel_wallpaper.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondo3.jpg"))); // NOI18N
@@ -106,10 +116,13 @@ public class Cliente extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "Rellena los campos");
             } else {
                 DaoCliente cli = new DaoCliente();
+                modelos.Cliente c = cli.buscarClientePorNombre(txt_Nombre.getText().trim());
                 if (!cli.clienteExiste(txt_Nombre.getText())) {
                     cli.insertarCliente(txt_Nombre.getText().trim(), txt_Telefono.getText().trim());
                     this.Limpiar();
                     JOptionPane.showMessageDialog(null, "Se inserto el cliente");
+                }else if(c.getEstado()==0){
+                    cli.restaurarCliente(txt_Nombre.getText().trim());
                 }else{
                     JOptionPane.showMessageDialog(null, "El cliente ya existe");
                 }
@@ -118,12 +131,41 @@ public class Cliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton_GuardarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-
+        if (txt_Nombre.getText().equals(null)) {
+            JOptionPane.showMessageDialog(null, "Rellena los campos");
+        } else {
+            if (txt_Telefono.getText().equals(null)) {
+                JOptionPane.showMessageDialog(null, "Rellena los campos");
+            } else {
+                DaoCliente cli = new DaoCliente();
+                if (!cli.clienteExiste(txt_Nombre.getText())) {
+                    cli.actualizarCliente(txt_Nombre.getText().trim(), txt_Telefono.getText().trim(), 1);
+                    this.Limpiar();
+                    JOptionPane.showMessageDialog(null, "Se inserto el cliente");
+                }else{
+                    JOptionPane.showMessageDialog(null, "El cliente ya existe");
+                }
+            }
+        }
     }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+        int option = JOptionPane.showConfirmDialog(null, "¿Deseas continuar?", "Confirmar", JOptionPane.YES_NO_OPTION);
+        if (option == JOptionPane.YES_OPTION) {
+            DaoCliente cli = new DaoCliente();
+            cli.eliminarCliente(txt_Nombre.getText().trim());
+            this.setVisible(true);
+        } else {
+            
+        }
+        
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton jButton_Guardar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

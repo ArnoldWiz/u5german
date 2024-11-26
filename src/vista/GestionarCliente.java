@@ -84,6 +84,7 @@ public class GestionarCliente extends javax.swing.JInternalFrame {
             vista.Cliente p = new vista.Cliente(producto);
             jDesktopPane_menu.add(p);
             p.setVisible(true);
+            this.setVisible(false);
         } else
             JOptionPane.showMessageDialog(null, "Cliente no encontrado");
     }//GEN-LAST:event_jButton1ActionPerformed

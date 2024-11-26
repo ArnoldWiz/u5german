@@ -31,7 +31,7 @@ public class DaoCliente {
 
                 callableStatement.setString(1, nombre);
                 callableStatement.setString(2, telefono);
-                callableStatement.setInt(3, 3);
+                callableStatement.setInt(3, 1);
 
                 callableStatement.execute();
             } else {
@@ -151,5 +151,126 @@ public class DaoCliente {
         }
 
         return cliente; // Devuelve el cliente o null si no se encontró
+    }
+    // Método para actualizar un cliente utilizando el procedimiento almacenado UpdateCliente
+
+    public void actualizarCliente(String nombre, String telefono, int estado) {
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+
+        try {
+            // Obtener la conexión desde la clase Conexion
+            connection = Conexion.conectar();
+
+            if (connection != null) {
+                // Preparar la llamada al procedimiento almacenado
+                String sql = "{CALL UpdateCliente(?, ?, ?)}";
+                callableStatement = connection.prepareCall(sql);
+
+                // Establecer los parámetros del procedimiento almacenado
+                callableStatement.setString(1, nombre);    // p_nombre
+                callableStatement.setString(2, telefono);  // p_telefono
+                callableStatement.setInt(3, estado);       // p_estado
+
+                // Ejecutar el procedimiento almacenado
+                callableStatement.execute();
+                System.out.println("Cliente actualizado exitosamente.");
+            } else {
+                System.err.println("No se pudo establecer la conexión a la base de datos.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al actualizar cliente: " + e.getMessage());
+        } finally {
+            // Cerrar los recursos
+            try {
+                if (callableStatement != null) {
+                    callableStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                System.err.println("Error al cerrar la conexión: " + e.getMessage());
+            }
+        }
+    }
+    
+    public void eliminarCliente(String nombre) {
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+
+        try {
+            // Obtener la conexión desde la clase Conexion
+            connection = Conexion.conectar();
+
+            if (connection != null) {
+                // Preparar la llamada al procedimiento almacenado
+                String sql = "{CALL EliminarCliente(?)}";
+                callableStatement = connection.prepareCall(sql);
+
+                // Establecer el parámetro del procedimiento almacenado
+                callableStatement.setString(1, nombre);    // p_nombre
+
+                // Ejecutar el procedimiento almacenado
+                callableStatement.execute();
+                System.out.println("Cliente marcado como inactivo (eliminado lógicamente) exitosamente.");
+            } else {
+                System.err.println("No se pudo establecer la conexión a la base de datos.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al eliminar cliente: " + e.getMessage());
+        } finally {
+            // Cerrar los recursos
+            try {
+                if (callableStatement != null) {
+                    callableStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                System.err.println("Error al cerrar la conexión: " + e.getMessage());
+            }
+        }
+    }
+    
+    // Método para restaurar un cliente (cambiar su estado a 1) utilizando el procedimiento almacenado RestaurarCliente
+    public void restaurarCliente(String nombre) {
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+
+        try {
+            // Obtener la conexión desde la clase Conexion
+            connection = Conexion.conectar();
+
+            if (connection != null) {
+                // Preparar la llamada al procedimiento almacenado
+                String sql = "{CALL RestaurarCliente(?)}";
+                callableStatement = connection.prepareCall(sql);
+
+                // Establecer el parámetro del procedimiento almacenado
+                callableStatement.setString(1, nombre);    // p_nombre
+
+                // Ejecutar el procedimiento almacenado
+                callableStatement.execute();
+                System.out.println("Cliente restaurado (marcado como activo) exitosamente.");
+            } else {
+                System.err.println("No se pudo establecer la conexión a la base de datos.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al restaurar cliente: " + e.getMessage());
+        } finally {
+            // Cerrar los recursos
+            try {
+                if (callableStatement != null) {
+                    callableStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                System.err.println("Error al cerrar la conexión: " + e.getMessage());
+            }
+        }
     }
 }
