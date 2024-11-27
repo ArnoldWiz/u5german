@@ -155,7 +155,7 @@ public class Cliente extends javax.swing.JInternalFrame {
         if (option == JOptionPane.YES_OPTION) {
             DaoCliente cli = new DaoCliente();
             cli.eliminarCliente(txt_Nombre.getText().trim());
-            this.setVisible(true);
+            this.setVisible(false);
         } else {
             
         }

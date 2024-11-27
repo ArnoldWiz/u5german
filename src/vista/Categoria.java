@@ -73,12 +73,23 @@ public class Categoria extends javax.swing.JInternalFrame {
 
         modelos.Categoria categoria = new modelos.Categoria();
         DaoCategoria controlCategoria = new DaoCategoria();
-
+        
+        modelos.Categoria c;
+        
         //validamos camoos vacios
         if (txt_descripcion.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Complete  todos los campos");
         } else {
+            c=controlCategoria.obtenerCategoria(txt_descripcion.getText());
             if (!controlCategoria.existeCategoria(txt_descripcion.getText().trim())) {
+                categoria.setDescripcion(txt_descripcion.getText().trim());
+                categoria.setEstado(1);
+                if (controlCategoria.guardar(categoria)) {
+                    JOptionPane.showMessageDialog(null, "Registro Guardado");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al Guardar");
+                }
+            } else if (c.getEstado()==0) {
                 categoria.setDescripcion(txt_descripcion.getText().trim());
                 categoria.setEstado(1);
                 if (controlCategoria.guardar(categoria)) {

@@ -20,8 +20,7 @@ public class DaoCategoria {
         Connection cn = Conexion.conectar();
         String sql = "SELECT * FROM categoria";
 
-        try (Statement st = cn.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
+        try (Statement st = cn.createStatement(); ResultSet rs = st.executeQuery(sql)) {
 
             jComboBox_categoria.removeAllItems();
             jComboBox_categoria.addItem("Seleccione categoría:");
@@ -41,8 +40,7 @@ public class DaoCategoria {
     public int IdCategoria(String categoria) {
         int obtenerIdCategoriaCombo = 0;
         String sql = "SELECT idCategoria FROM categoria WHERE descripcion = ?";
-        try (Connection cn = Conexion.conectar();
-             PreparedStatement ps = cn.prepareStatement(sql)) {
+        try (Connection cn = Conexion.conectar(); PreparedStatement ps = cn.prepareStatement(sql)) {
 
             ps.setString(1, categoria);
             try (ResultSet rs = ps.executeQuery()) {
@@ -101,8 +99,7 @@ public class DaoCategoria {
     public boolean existeCategoria(String categoria) {
         boolean respuesta = false;
         String sql = "SELECT descripcion FROM categoria WHERE descripcion = ?";
-        try (Connection cn = Conexion.conectar();
-             PreparedStatement ps = cn.prepareStatement(sql)) {
+        try (Connection cn = Conexion.conectar(); PreparedStatement ps = cn.prepareStatement(sql)) {
 
             ps.setString(1, categoria);
             try (ResultSet rs = ps.executeQuery()) {
@@ -117,12 +114,31 @@ public class DaoCategoria {
         return respuesta;
     }
 
+    public Categoria obtenerCategoria(String descripcionCategoria) {
+        Categoria categoria = null;
+        String sql = "SELECT * FROM categoria WHERE descripcion = ?";
+        try (Connection cn = Conexion.conectar(); PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setString(1, descripcionCategoria);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    int idCategoria = rs.getInt("idCategoria");
+                    String descripcion = rs.getString("descripcion");
+                    int estado = rs.getInt("estado");
+
+                    categoria = new Categoria(idCategoria, descripcion, estado);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener la categoría: " + e);
+        }
+        return categoria;
+    }
+
     public String buscarDescripcionCategoria(int categoria) {
         String descripcionEncontrada = null;
         String sql = "SELECT descripcion FROM categoria WHERE idCategoria = ?";
 
-        try (Connection cn = Conexion.conectar();
-             PreparedStatement ps = cn.prepareStatement(sql)) {
+        try (Connection cn = Conexion.conectar(); PreparedStatement ps = cn.prepareStatement(sql)) {
 
             ps.setInt(1, categoria);
             try (ResultSet rs = ps.executeQuery()) {
@@ -179,46 +195,6 @@ public class DaoCategoria {
         return respuesta;
     }
 
-    public boolean eliminar(int idCategoria) {
-        boolean respuesta = false;
-        String sql = "DELETE FROM categoria WHERE idCategoria = ?";
-        Connection cn = Conexion.conectar();
-
-        try {
-            cn.setAutoCommit(false);
-
-            try (PreparedStatement ps = cn.prepareStatement(sql)) {
-                ps.setInt(1, idCategoria);
-
-                if (ps.executeUpdate() > 0) {
-                    respuesta = true;
-                }
-            }
-
-            cn.commit();
-
-        } catch (SQLException e) {
-            System.out.println("Error al eliminar categoría: " + e);
-            try {
-                if (cn != null) {
-                    cn.rollback();
-                }
-            } catch (SQLException rollbackEx) {
-                System.out.println("Error en rollback: " + rollbackEx);
-            }
-        } finally {
-            try {
-                if (cn != null) {
-                    cn.setAutoCommit(true);
-                    cn.close();
-                }
-            } catch (SQLException ex) {
-                System.out.println("Error al cerrar conexión: " + ex);
-            }
-        }
-        return respuesta;
-    }
-    
     public void cargarTablaCategorias(DefaultTableModel model) {
         Connection con = null;
         String sql = "SELECT idCategoria, descripcion, estado FROM categoria";
@@ -284,7 +260,7 @@ public class DaoCategoria {
             System.out.println("Error al seleccionar categoría: " + e);
         }
     }
-    
+
     public DefaultTableModel cargarTablaCategorias() {
         Connection con = null;
         DefaultTableModel model = new DefaultTableModel();
@@ -304,10 +280,12 @@ public class DaoCategoria {
 
             while (rs.next()) {
                 Object fila[] = new Object[3];
-                for (int i = 0; i < 3; i++) {
-                    fila[i] = rs.getObject(i + 1);
+                if (rs.getInt("estado") == 1) {
+                    for (int i = 0; i < 3; i++) {
+                        fila[i] = rs.getObject(i + 1);
+                    }
+                    model.addRow(fila);
                 }
-                model.addRow(fila);
             }
 
             con.commit();
@@ -325,7 +303,7 @@ public class DaoCategoria {
 
         return model;
     }
-    
+
     public Categoria obtenerCategoriaPorId(int idCategoria) {
         Connection con = null;
         Categoria categoria = null;

@@ -1,6 +1,7 @@
 package vista;
 
 import daos.DaoCategoria;
+import daos.DaoCliente;
 import java.awt.Dimension;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -32,8 +33,7 @@ public class GestionarCategoria extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnActivo = new javax.swing.JRadioButton();
-        btnInactivo = new javax.swing.JRadioButton();
+        btn_eliminar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -48,25 +48,13 @@ public class GestionarCategoria extends javax.swing.JInternalFrame {
         setIconifiable(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btnActivo.setFont(new java.awt.Font("Segoe UI Variable", 0, 14)); // NOI18N
-        btnActivo.setForeground(new java.awt.Color(255, 255, 255));
-        btnActivo.setText("ACTIVO");
-        btnActivo.addActionListener(new java.awt.event.ActionListener() {
+        btn_eliminar.setText("Eliminar");
+        btn_eliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnActivoActionPerformed(evt);
+                btn_eliminarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnActivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, -1, -1));
-
-        btnInactivo.setFont(new java.awt.Font("Segoe UI Variable", 0, 14)); // NOI18N
-        btnInactivo.setForeground(new java.awt.Color(255, 255, 255));
-        btnInactivo.setText("INACTIVO");
-        btnInactivo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnInactivoActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnInactivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 90, -1, -1));
+        getContentPane().add(btn_eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 270, -1, -1));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Variable", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -122,7 +110,7 @@ public class GestionarCategoria extends javax.swing.JInternalFrame {
                 jButton_actualizarActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton_actualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 250, -1, -1));
+        getContentPane().add(jButton_actualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, -1, -1));
 
         jLabel_wallpaper.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondo3.jpg"))); // NOI18N
         getContentPane().add(jLabel_wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 590, 370));
@@ -130,28 +118,12 @@ public class GestionarCategoria extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnActivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActivoActionPerformed
-        // TODO add your handling code here:
-        btnActivo.setSelected(true);
-        btnInactivo.setSelected(false);
-    }//GEN-LAST:event_btnActivoActionPerformed
-
-    private void btnInactivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInactivoActionPerformed
-        // TODO add your handling code here:
-        btnActivo.setSelected(false);
-        btnInactivo.setSelected(true);
-    }//GEN-LAST:event_btnInactivoActionPerformed
-
     private void jButton_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_actualizarActionPerformed
         if (!txt_descripcion.getText().isEmpty()) {
-            int estado = 0;
-            if (btnActivo.isSelected()) {
-                estado = 1;
-            }
             Categoria categoria = new Categoria();
             DaoCategoria controlCategoria = new DaoCategoria();
             categoria.setDescripcion(txt_descripcion.getText().trim());
-            if (controlCategoria.actualizar(categoria, idCategoria, estado)) {
+            if (controlCategoria.actualizar(categoria, idCategoria, 1)) {
                 JOptionPane.showMessageDialog(null, "Categoria Actulizada");
                 txt_descripcion.setText("");
                 DaoCategoria daoCategoria = new DaoCategoria();
@@ -175,10 +147,36 @@ public class GestionarCategoria extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jTable_categoriasMouseClicked
 
+    private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
+        // TODO add your handling code here:
+        if (!txt_descripcion.getText().isEmpty()) {
+            int option = JOptionPane.showConfirmDialog(null, "¿Deseas continuar?", "Confirmar", JOptionPane.YES_NO_OPTION);
+            if (option == JOptionPane.YES_OPTION) {
+                Categoria categoria = new Categoria();
+                DaoCategoria controlCategoria = new DaoCategoria();
+                categoria.setDescripcion(txt_descripcion.getText().trim());
+                if (controlCategoria.actualizar(categoria, idCategoria, 0)) {
+                    JOptionPane.showMessageDialog(null, "Categoria Eliminada");
+                    txt_descripcion.setText("");
+                    DaoCategoria daoCategoria = new DaoCategoria();
+                    DefaultTableModel model = daoCategoria.cargarTablaCategorias();
+                    jTable_categorias.setModel(model);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al eliminar Categoria");
+                }
+                this.setVisible(true);
+            } else {
+
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione una categoria");
+        }
+    }//GEN-LAST:event_btn_eliminarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JRadioButton btnActivo;
-    private javax.swing.JRadioButton btnInactivo;
+    private javax.swing.JButton btn_eliminar;
     private javax.swing.JButton jButton_actualizar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -194,15 +192,5 @@ public class GestionarCategoria extends javax.swing.JInternalFrame {
         DaoCategoria daoCategoria = new DaoCategoria();
         Categoria categoria = daoCategoria.obtenerCategoriaPorId(idCategoria);
 
-        if (categoria != null) {
-            txt_descripcion.setText(categoria.getDescripcion());
-            if (categoria.getEstado() == 1) {
-                btnActivo.setSelected(true);
-                btnInactivo.setSelected(false);
-            } else {
-                btnActivo.setSelected(false);
-                btnInactivo.setSelected(true);
-            }
-        }
     }
 }

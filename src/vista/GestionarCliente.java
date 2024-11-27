@@ -80,7 +80,7 @@ public class GestionarCliente extends javax.swing.JInternalFrame {
         modelos.Cliente producto = new modelos.Cliente();
         DaoCliente daop = new DaoCliente();
         producto = daop.buscarClientePorNombre(txtNombre.getText().trim());
-        if (producto != null) {
+        if (producto != null && producto.getEstado()==1) {
             vista.Cliente p = new vista.Cliente(producto);
             jDesktopPane_menu.add(p);
             p.setVisible(true);

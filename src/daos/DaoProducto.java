@@ -12,7 +12,7 @@ import modelos.Producto;
  * @author barre
  */
 public class DaoProducto {
-    
+
     public boolean guardar(Producto objeto, String categoria) {
         boolean respuesta = false;
         Connection cn = Conexion.conectar();
@@ -63,8 +63,7 @@ public class DaoProducto {
     public boolean existeProducto(String producto) {
         boolean respuesta = false;
         String sql = "SELECT nombre FROM producto WHERE nombre = ?";
-        try (Connection cn = Conexion.conectar();
-             PreparedStatement ps = cn.prepareStatement(sql)) {
+        try (Connection cn = Conexion.conectar(); PreparedStatement ps = cn.prepareStatement(sql)) {
 
             ps.setString(1, producto);
             try (ResultSet rs = ps.executeQuery()) {
@@ -82,8 +81,7 @@ public class DaoProducto {
     public boolean existeProductoCodigo(String codigo) {
         boolean respuesta = false;
         String sql = "SELECT nombre FROM producto WHERE codigo = ?";
-        try (Connection cn = Conexion.conectar();
-             PreparedStatement ps = cn.prepareStatement(sql)) {
+        try (Connection cn = Conexion.conectar(); PreparedStatement ps = cn.prepareStatement(sql)) {
 
             ps.setString(1, codigo);
             try (ResultSet rs = ps.executeQuery()) {
@@ -101,8 +99,7 @@ public class DaoProducto {
     public Producto buscarProductoPorCodigo(String codigo) {
         Producto producto = null;
         String sql = "SELECT * FROM producto WHERE codigo = ?";
-        try (Connection cn = Conexion.conectar();
-             PreparedStatement ps = cn.prepareStatement(sql)) {
+        try (Connection cn = Conexion.conectar(); PreparedStatement ps = cn.prepareStatement(sql)) {
 
             ps.setString(1, codigo);
             try (ResultSet rs = ps.executeQuery()) {
@@ -171,4 +168,23 @@ public class DaoProducto {
         }
         return respuesta;
     }
+
+    public boolean desactivarProductoPorCodigo(int codigo) {
+        boolean actualizado = false;
+        String sql = "UPDATE producto SET estado = 0 WHERE codigo = ?";
+
+        try (Connection cn = Conexion.conectar(); PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setInt(1, codigo); // Se establece el código como parámetro
+            int filasAfectadas = ps.executeUpdate();
+
+            if (filasAfectadas > 0) {
+                actualizado = true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al actualizar el estado del producto: " + e);
+        }
+
+        return actualizado;
+    }
+
 }

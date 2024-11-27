@@ -94,7 +94,7 @@ public class GestionarProduc extends javax.swing.JInternalFrame {
             modelos.Producto producto = new modelos.Producto();
             DaoProducto daop = new DaoProducto();
             producto = daop.buscarProductoPorCodigo(txtCodigo.getText().trim());
-            if (producto != null) {
+            if (producto != null && producto.getEstado()==1) {
                 vista.Producto p = new vista.Producto(producto);
                 jDesktopPane_menu.add(p);
                 p.setVisible(true);

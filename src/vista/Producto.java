@@ -49,6 +49,7 @@ public class Producto extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btn_eliminar = new javax.swing.JButton();
         txt_Codigo = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -71,6 +72,14 @@ public class Producto extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btn_eliminar.setText("Eliminar");
+        btn_eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_eliminarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btn_eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 320, -1, -1));
         getContentPane().add(txt_Codigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 30, 170, 30));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI Variable", 1, 14)); // NOI18N
@@ -91,7 +100,7 @@ public class Producto extends javax.swing.JInternalFrame {
                 btnActualizarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 320, -1, 30));
+        getContentPane().add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 320, -1, 30));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI Variable", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
@@ -163,7 +172,7 @@ public class Producto extends javax.swing.JInternalFrame {
                 jButton_GuardarActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton_Guardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 320, 120, 30));
+        getContentPane().add(jButton_Guardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 320, 120, 30));
 
         jLabel_wallpaper.setForeground(new java.awt.Color(255, 255, 255));
         jLabel_wallpaper.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondo3.jpg"))); // NOI18N
@@ -177,15 +186,16 @@ public class Producto extends javax.swing.JInternalFrame {
 
         modelos.Producto producto = new modelos.Producto();
         DaoProducto controlProducto = new DaoProducto();
-        DaoCategoria daoCat = new DaoCategoria();
+        DaoCategoria daoC = new DaoCategoria();
         String categoria = "";
         categoria = jComboBox_categoria.getSelectedItem().toString().trim();
+        modelos.Producto p;
 
         //validar campos
         if (txt_Codigo.getText().equals("") || txt_nombre.getText().equals("") || txt_cantidad.getText().equals("") || txt_precio.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Complete todos los campos");
         } else {
-            //consulta para ver si el producto ya existe
+            p=controlProducto.buscarProductoPorCodigo(txt_Codigo.getText().trim());
             if (!controlProducto.existeProducto(txt_nombre.getText().trim())) {
 
                 if (categoria.equalsIgnoreCase("Seleccione categoria:")) {
@@ -219,7 +229,7 @@ public class Producto extends javax.swing.JInternalFrame {
                         }
 
                         //idcategoria - cargar metodo que obtiene el id de categoria
-                        daoCat.IdCategoria((String) this.jComboBox_categoria.getSelectedItem());
+                        daoC.IdCategoria((String) this.jComboBox_categoria.getSelectedItem());
                         producto.setIdCategoria(obtenerIdCategoriaCombo);
                         producto.setCodigo(Integer.parseInt(txt_Codigo.getText().trim()));
                         producto.setEstado(1);
@@ -227,7 +237,7 @@ public class Producto extends javax.swing.JInternalFrame {
 
                         if (controlProducto.guardar(producto,(String) this.jComboBox_categoria.getSelectedItem())) {
                             JOptionPane.showMessageDialog(null, "Registro Guardado");
-                            jComboBox_categoria = daoCat.CargarComboCategorias(jComboBox_categoria);
+                            jComboBox_categoria = daoC.CargarComboCategorias(jComboBox_categoria);
                             this.Limpiar();
                         } else {
                             JOptionPane.showMessageDialog(null, "Error al Guardar");
@@ -237,7 +247,44 @@ public class Producto extends javax.swing.JInternalFrame {
                         System.out.println("Error en: " + e);
                     }
                 }
-            } else {
+            } else if(p.getEstado()==0){
+                    producto.setNombre(txt_nombre.getText().trim());
+                    producto.setCantidad(Integer.parseInt(txt_cantidad.getText().trim()));
+                    producto.setCodigo(Integer.parseInt(txt_Codigo.getText().trim()));
+                    producto.setDescripcion(txt_descripcion.getText().trim());
+                    String precioTXT = "";
+                    double Precio = 0.0;
+                    precioTXT = txt_precio.getText().trim();
+                    boolean aux = false;
+
+                    for (int i = 0; i < precioTXT.length(); i++) {
+                        if (precioTXT.charAt(i) == ',') {
+                            String precioNuevo = precioTXT.replace(",", ".");
+                            Precio = Double.parseDouble(precioNuevo);
+                            aux = true;
+                        }
+                    }
+                    
+                    if (aux == true) {
+                        producto.setPrecio(Precio);
+                    } else {
+                        Precio = Double.parseDouble(precioTXT);
+                        producto.setPrecio(Precio);
+                    }
+
+                    producto.setDescripcion(txt_descripcion.getText().trim());
+                    producto.setIdCategoria(daoC.IdCategoria((String) this.jComboBox_categoria.getSelectedItem()));
+                    producto.setEstado(1);
+
+                    if (controlProducto.actualizar(producto, p.getIdProducto())) {
+                        JOptionPane.showMessageDialog(null, "Registro Actualizado");
+                        jComboBox_categoria = daoC.CargarComboCategorias(jComboBox_categoria);
+                        this.Limpiar();
+                        this.setVisible(false);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error al Guardar");
+                    }
+            }else {
                 JOptionPane.showMessageDialog(null, "El producto ya existe en la Base de Datos");
             }
         }
@@ -267,10 +314,7 @@ public class Producto extends javax.swing.JInternalFrame {
                     double Precio = 0.0;
                     precioTXT = txt_precio.getText().trim();
                     boolean aux = false;
-                    /*
-                    *Si el usuario ingresa , (coma) como punto decimal,
-                    lo transformamos a punto (.)
-                    */
+
                     for (int i = 0; i < precioTXT.length(); i++) {
                         if (precioTXT.charAt(i) == ',') {
                             String precioNuevo = precioTXT.replace(",", ".");
@@ -278,7 +322,7 @@ public class Producto extends javax.swing.JInternalFrame {
                             aux = true;
                         }
                     }
-                    //evaluar la condicion
+                    
                     if (aux == true) {
                         producto.setPrecio(Precio);
                     } else {
@@ -314,9 +358,25 @@ public class Producto extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_descripcionActionPerformed
 
+    private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
+        // TODO add your handling code here:
+        int option = JOptionPane.showConfirmDialog(null, "¿Deseas continuar?", "Confirmar", JOptionPane.YES_NO_OPTION);
+        if (option == JOptionPane.YES_OPTION) {
+            DaoProducto cli = new DaoProducto();
+            if(cli.desactivarProductoPorCodigo(Integer.parseInt(txt_Codigo.getText().trim()))){
+                JOptionPane.showMessageDialog(null, "Se elimino correctamente");
+            }else
+                JOptionPane.showMessageDialog(null, "Error al eliminar");
+            this.setVisible(true);
+        } else {
+            
+        }
+    }//GEN-LAST:event_btn_eliminarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btn_eliminar;
     private javax.swing.JButton jButton_Guardar;
     private javax.swing.JComboBox<String> jComboBox_categoria;
     private javax.swing.JLabel jLabel1;
