@@ -64,7 +64,7 @@ VALUES
 
 create table producto(
 idProducto int (11) auto_increment primary key,
-codigo int(12)	not null,
+codigo int(20)	not null,
 nombre varchar(100) not null,
 cantidad int(11) not null,
 precio double(10,2) not null,
@@ -241,8 +241,6 @@ BEGIN
 END $$
 DELIMITER ;
 
-CALL InsertarVentasSimuladas(2000);
-
 CREATE VIEW reporte_ventas_mes AS
 SELECT 
     v.idVenta AS folio,
@@ -304,19 +302,28 @@ CREATE TABLE auditoria_ventas (
     idUsuario varchar(50),
     detalles VARCHAR(255)
 );
-DELIMITER $$
 
+DELIMITER $$
 CREATE TRIGGER auditoria_ventas_insert
 AFTER INSERT ON venta
 FOR EACH ROW
 BEGIN
-    DECLARE usuario_id INT;
     DECLARE detalles_cambio VARCHAR(255);
-    SET usuario_id = (SELECT idUsuario FROM usuario WHERE usuario = USER());
-    SET detalles_cambio = CONCAT('Venta insertada: ', NEW.idVenta);
+    DECLARE nombre_completo VARCHAR(255);
+    
+    -- Obtener el nombre completo del usuario asociado a la venta
+    SET nombre_completo = (SELECT CONCAT(nombre, ' ', apellido) 
+                           FROM usuario 
+                           WHERE idUsuario = NEW.idUsuario);
+    
+    -- Crear el mensaje para la auditoría
+    SET detalles_cambio = CONCAT('Venta insertada: ', NEW.idVenta, ' por ', nombre_completo);
+    
+    -- Insertar en la tabla auditoria_ventas
     INSERT INTO auditoria_ventas (idVenta, accion, fechaCambio, idUsuario, detalles)
-    VALUES (NEW.idVenta, 'INSERT', NOW(), usuario_id, detalles_cambio);
+    VALUES (NEW.idVenta, 'INSERT', NOW(), NEW.idUsuario, detalles_cambio);
 END $$
+
 DELIMITER ;
 
 DELIMITER $$
@@ -346,7 +353,6 @@ BEGIN
     VALUES (OLD.idVenta, 'DELETE', NOW(), current_user(), detalles_cambio);
 END $$
 DELIMITER ;
-
 
 DELIMITER $$
 CREATE TRIGGER validacion_producto_insert
@@ -398,3 +404,5 @@ BEGIN
     RETURN cantidad;
 END $$
 DELIMITER ;
+
+
