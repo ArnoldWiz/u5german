@@ -95,6 +95,45 @@ public class DaoCategoria {
         }
         return respuesta;
     }
+    
+    public boolean guardar2(Categoria objeto) {
+        boolean respuesta = false;
+        String sql = "UPDATE categoria SET estado=1 where descripcion=?";
+        Connection cn = Conexion.conectar();
+        try {
+            cn.setAutoCommit(false);
+
+            try (PreparedStatement ps = cn.prepareStatement(sql)) {
+                ps.setString(1, objeto.getDescripcion());
+
+                if (ps.executeUpdate() > 0) {
+                    respuesta = true;
+                }
+            }
+
+            cn.commit();
+
+        } catch (SQLException e) {
+            System.out.println("Error al guardar categoría: " + e);
+            try {
+                if (cn != null) {
+                    cn.rollback();
+                }
+            } catch (SQLException rollbackEx) {
+                System.out.println("Error en rollback: " + rollbackEx);
+            }
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.setAutoCommit(true);
+                    cn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error al cerrar conexión: " + ex);
+            }
+        }
+        return respuesta;
+    }
 
     public boolean existeCategoria(String categoria) {
         boolean respuesta = false;

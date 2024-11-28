@@ -13,15 +13,15 @@ public class Conexion {
     //conexion local
     public static Connection conectar() {
         try {
-            /*Connection cn = DriverManager.getConnection(
+            Connection cn = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/ventas?useSSL=false&requireSSL=false",
                     "root", 
-                    "root"
-             */
-            Connection cn = DriverManager.getConnection(
+                    "root");
+             
+            /*Connection cn = DriverManager.getConnection(
                     "jdbc:mysql://arnold-itsur.mysql.database.azure.com/ventas?useSSL=true&requireSSL=true",
                     "arnoldrg",
-                    "Whiskaz001");
+                    "Whiskaz001");*/
 
             return cn;
         } catch (SQLException e) {

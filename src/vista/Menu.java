@@ -32,11 +32,15 @@ public class Menu extends javax.swing.JFrame {
         this.jDesktopPane_menu.setBounds(0, 0, ancho, (alto - 110));
         this.add(jDesktopPane_menu);
 
-        Facturacion interFacturacion = new Facturacion();
+        Facturacion interFacturacion = new Facturacion(us);
         jDesktopPane_menu.add(interFacturacion);
         interFacturacion.setVisible(true);
         if (us != null) {
             this.tipo_usuario = us.getTipo();
+        }
+        if (us == null){
+            us=new Usuario();
+            us.setIdUsuario(1);
         }
         Timer timer = new Timer(1000, e -> hora());
         timer.start();

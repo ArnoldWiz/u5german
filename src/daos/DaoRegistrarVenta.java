@@ -22,10 +22,12 @@ public class DaoRegistrarVenta {
         Connection cn = Conexion.conectar();
         try {
             cn.setAutoCommit(false);
-            PreparedStatement consulta = cn.prepareStatement("INSERT INTO venta VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement consulta = cn.prepareStatement("INSERT INTO venta VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             consulta.setInt(1, 0);
-            consulta.setDouble(2, objeto.getValorPagar());
-            consulta.setString(3, objeto.getFechaVenta());
+            consulta.setInt(2, objeto.getIdUsuario());
+            consulta.setInt(3, objeto.getIdCliente());
+            consulta.setDouble(4, objeto.getValorPagar());
+            consulta.setString(5, objeto.getFechaVenta());
 
             if (consulta.executeUpdate() > 0) {
                 ResultSet rs = consulta.getGeneratedKeys();

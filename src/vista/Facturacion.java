@@ -1,6 +1,7 @@
 package vista;
 
 import conexion.Conexion;
+import daos.DaoCliente;
 import daos.DaoProducto;
 import daos.DaoRegistrarVenta;
 import daos.DaoVentaPDF;
@@ -21,6 +22,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import modelos.Venta;
 import modelos.DetalleVenta;
+import modelos.Usuario;
 
 /**
  *
@@ -54,14 +56,23 @@ public class Facturacion extends javax.swing.JInternalFrame {
     private double ivaGeneral = 0.0;
     private double totalPagarGeneral = 0.0;
     //fin de variables de calculos globales
+    Usuario u;
 
     private int auxIdDetalle = 1;//id del detalle de venta
 
-    public Facturacion() {
+    public Facturacion(Usuario us) {
         initComponents();
         this.setSize(new Dimension(800, 600));
         this.setTitle("Facturacion");
         this.inicializarTablaProducto();
+        
+        if(us == null){
+            us=new Usuario();
+            us.setIdUsuario(1);
+        }
+        
+        cargarClientes();
+        u=us;
 
         txt_efectivo.setEnabled(false);
         jButton_calcular_cambio.setEnabled(false);
@@ -122,6 +133,9 @@ public class Facturacion extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jLabel3 = new javax.swing.JLabel();
+        jClientes = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -153,6 +167,23 @@ public class Facturacion extends javax.swing.JInternalFrame {
         jLabel3.setText("Producto:");
 
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jClientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        getContentPane().add(jClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 80, 200, -1));
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/actualizar.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 80, 30, 30));
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel6.setText("Cliente:");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 80, -1));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Variable", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -432,13 +463,18 @@ public class Facturacion extends javax.swing.JInternalFrame {
         Venta cabeceraVenta = new Venta();
         DetalleVenta detalleVenta = new DetalleVenta();
         DaoRegistrarVenta controlVenta = new DaoRegistrarVenta();
+        DaoCliente cliente=new DaoCliente();
 
         String fechaActual = "";
         Date date = new Date();
         fechaActual = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(date);
 
         if (listaProductos.size() > 0) {
+            
             cabeceraVenta.setIdventa(0);
+            cabeceraVenta.setIdUsuario(u.getIdUsuario());
+            idCliente=cliente.ObtenerIdClientePorNombre((String)jClientes.getSelectedItem());
+            cabeceraVenta.setIdCliente(idCliente);
             cabeceraVenta.setValorPagar(Double.parseDouble(txt_total_pagar.getText()));
             cabeceraVenta.setFechaVenta(fechaActual);
             cabeceraVenta.setEstado(1);
@@ -491,17 +527,25 @@ public class Facturacion extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_codeActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.cargarClientes();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton_RegistrarVenta;
     private javax.swing.JButton jButton_añadir_producto;
     private javax.swing.JButton jButton_calcular_cambio;
+    private javax.swing.JComboBox<String> jClientes;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -651,5 +695,10 @@ public class Facturacion extends javax.swing.JInternalFrame {
                 System.out.println("Error al cerrar la conexión: " + e);
             }
         }
+    }
+    
+    public void cargarClientes(){
+        DaoCliente c=new DaoCliente();
+        jClientes = c.CargarComboClientes(jClientes);
     }
 }

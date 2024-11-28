@@ -85,15 +85,15 @@ public class Categoria extends javax.swing.JInternalFrame {
                 categoria.setDescripcion(txt_descripcion.getText().trim());
                 categoria.setEstado(1);
                 if (controlCategoria.guardar(categoria)) {
-                    JOptionPane.showMessageDialog(null, "Registro Guardado");
+                    JOptionPane.showMessageDialog(null, "Categoria Guardada");
                 } else {
                     JOptionPane.showMessageDialog(null, "Error al Guardar");
                 }
             } else if (c.getEstado()==0) {
                 categoria.setDescripcion(txt_descripcion.getText().trim());
                 categoria.setEstado(1);
-                if (controlCategoria.guardar(categoria)) {
-                    JOptionPane.showMessageDialog(null, "Registro Guardado");
+                if (controlCategoria.guardar2(categoria)) {
+                    JOptionPane.showMessageDialog(null, "Categoria Guardada");
                 } else {
                     JOptionPane.showMessageDialog(null, "Error al Guardar");
                 }

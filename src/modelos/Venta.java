@@ -6,6 +6,8 @@ package modelos;
 public class Venta {
     private int idventa;
     private double valorPagar;
+    private int idUsuario;
+    private int idCliente;
     private String fechaVenta;
     private int estado;
     
@@ -16,12 +18,31 @@ public class Venta {
         this.estado = 0;
     }
 
-    public Venta(int idCabeceraventa, double valorPagar, String fechaVenta, int estado) {
-        this.idventa = idCabeceraventa;
+    public Venta(int idventa, double valorPagar, int idUsuario, int idCliente, String fechaVenta, int estado) {
+        this.idventa = idventa;
         this.valorPagar = valorPagar;
+        this.idUsuario = idUsuario;
+        this.idCliente = idCliente;
         this.fechaVenta = fechaVenta;
         this.estado = estado;
     }
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public int getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
+    }
+    
     
 
     public int getIdventa() {

@@ -62,7 +62,7 @@ public class DaoProducto {
 
     public boolean existeProducto(String producto) {
         boolean respuesta = false;
-        String sql = "SELECT nombre FROM producto WHERE nombre = ?";
+        String sql = "SELECT codigo FROM producto WHERE codigo = ?";
         try (Connection cn = Conexion.conectar(); PreparedStatement ps = cn.prepareStatement(sql)) {
 
             ps.setString(1, producto);

@@ -51,13 +51,14 @@ public class Cliente extends javax.swing.JInternalFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btnEliminar.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminar.png"))); // NOI18N
         btnEliminar.setText("Eliminar");
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 120, -1, -1));
+        getContentPane().add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 120, 110, 30));
         getContentPane().add(txt_Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 30, 170, 30));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI Variable", 1, 14)); // NOI18N
@@ -78,7 +79,7 @@ public class Cliente extends javax.swing.JInternalFrame {
                 btnActualizarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 120, -1, 30));
+        getContentPane().add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 120, -1, 30));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI Variable", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -97,7 +98,7 @@ public class Cliente extends javax.swing.JInternalFrame {
                 jButton_GuardarActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton_Guardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 120, 30));
+        getContentPane().add(jButton_Guardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 120, 30));
 
         jLabel_wallpaper.setForeground(new java.awt.Color(255, 255, 255));
         jLabel_wallpaper.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondo3.jpg"))); // NOI18N
@@ -123,6 +124,7 @@ public class Cliente extends javax.swing.JInternalFrame {
                     JOptionPane.showMessageDialog(null, "Se inserto el cliente");
                 }else if(c.getEstado()==0){
                     cli.restaurarCliente(txt_Nombre.getText().trim());
+                    JOptionPane.showMessageDialog(null, "Se inserto el cliente");
                 }else{
                     JOptionPane.showMessageDialog(null, "El cliente ya existe");
                 }
@@ -156,10 +158,11 @@ public class Cliente extends javax.swing.JInternalFrame {
             DaoCliente cli = new DaoCliente();
             cli.eliminarCliente(txt_Nombre.getText().trim());
             this.setVisible(false);
+            Facturacion f = new Facturacion(null);
+            f.cargarClientes();
         } else {
             
         }
-        
     }//GEN-LAST:event_btnEliminarActionPerformed
 
 

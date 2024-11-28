@@ -78,69 +78,66 @@ CONSTRAINT fk_idCategoria FOREIGN KEY (idCategoria) REFERENCES categoria(idCateg
 
 INSERT INTO producto (codigo, nombre, cantidad, precio, descripcion, idCategoria, estado, iva, minimo)
 VALUES
-(100001, 'Tortilla de Maíz', 500, 20.00, 'Kilogramo de tortilla', 1, 1, 16, 50),
-(100002, 'Frijol Negro', 300, 25.50, 'Kilogramo de frijol negro', 1, 1, 16, 30),
-(100003, 'Arroz Blanco', 400, 22.30, 'Kilogramo de arroz', 1, 1, 16, 40),
-(100004, 'Huevo', 100, 85.00, 'Caja de 12 huevos', 2, 1, 16, 10),
-(100005, 'Aceite Vegetal', 200, 45.00, 'Botella de 1 litro', 3, 1, 16, 20),
-(100006, 'Leche Entera', 150, 24.00, 'Litro de leche entera', 4, 1, 16, 15),
-(100007, 'Azúcar', 350, 18.50, 'Kilogramo de azúcar refinada', 1, 1, 16, 25),
-(100008, 'Sal', 400, 10.00, 'Paquete de 1 kilogramo', 1, 1, 16, 30),
-(100009, 'Pan de Caja', 200, 35.00, 'Bolsa de pan de caja', 2, 1, 16, 10),
-(100010, 'Café Soluble', 100, 95.00, 'Frasco de 200 gramos', 3, 1, 16, 10),
-(100011, 'Pasta para Sopa', 300, 10.00, 'Paquete de 200 gramos', 1, 1, 16, 15),
-(100012, 'Avena', 150, 15.50, 'Bolsa de 500 gramos', 1, 1, 16, 10),
-(100013, 'Carne de Res', 80, 150.00, 'Kilogramo de carne de res', 5, 1, 16, 5),
-(100014, 'Carne de Pollo', 100, 90.00, 'Kilogramo de carne de pollo', 5, 1, 16, 10),
-(100015, 'Pescado', 50, 120.00, 'Kilogramo de pescado', 5, 1, 16, 5),
-(100016, 'Tomate', 500, 15.00, 'Kilogramo de tomate', 6, 1, 16, 50),
-(100017, 'Cebolla', 400, 18.00, 'Kilogramo de cebolla', 6, 1, 16, 40),
-(100018, 'Papas', 350, 22.50, 'Kilogramo de papas', 6, 1, 16, 35),
-(100019, 'Zanahoria', 400, 14.00, 'Kilogramo de zanahoria', 6, 1, 16, 30),
-(100020, 'Manzana', 300, 35.00, 'Kilogramo de manzana', 6, 1, 16, 25),
-(100021, 'Plátano', 400, 18.00, 'Kilogramo de plátano', 6, 1, 16, 30),
-(100022, 'Naranja', 500, 12.50, 'Kilogramo de naranja', 6, 1, 16, 50),
-(100023, 'Jitomate', 400, 18.00, 'Kilogramo de jitomate', 6, 1, 16, 40),
-(100024, 'Chiles Secos', 150, 60.00, 'Kilogramo de chile seco', 6, 1, 16, 10),
-(100025, 'Queso Fresco', 100, 75.00, 'Kilogramo de queso fresco', 4, 1, 16, 10),
-(100026, 'Crema', 120, 25.00, 'Bote de 250 gramos', 4, 1, 16, 10),
-(100027, 'Yogurt', 200, 22.00, 'Litro de yogurt', 4, 1, 16, 15),
-(100028, 'Lentejas', 300, 23.50, 'Kilogramo de lentejas', 1, 1, 16, 30),
-(100029, 'Atún en Lata', 150, 20.00, 'Lata de 140 gramos', 5, 1, 16, 10),
-(100030, 'Sardinas en Lata', 120, 18.00, 'Lata de 200 gramos', 5, 1, 16, 10),
-(100031, 'Harina de Trigo', 200, 12.50, 'Paquete de 1 kilogramo', 1, 1, 16, 20),
-(100032, 'Galletas', 250, 25.00, 'Paquete de 400 gramos', 2, 1, 16, 25),
-(100033, 'Mermelada', 100, 30.00, 'Frasco de 500 gramos', 3, 1, 16, 10),
-(100034, 'Mayonesa', 150, 35.00, 'Frasco de 500 gramos', 3, 1, 16, 10),
-(100035, 'Chocolate en Polvo', 100, 45.00, 'Caja de 500 gramos', 3, 1, 16, 10),
-(100036, 'Pollo Entero', 80, 100.00, 'Kilogramo de pollo entero', 5, 1, 16, 5),
-(100037, 'Chayote', 300, 12.00, 'Kilogramo de chayote', 6, 1, 16, 25),
-(100038, 'Calabaza', 300, 15.00, 'Kilogramo de calabaza', 6, 1, 16, 25),
-(100039, 'Pimiento', 200, 22.00, 'Kilogramo de pimiento', 6, 1, 16, 20),
-(100040, 'Lechuga', 250, 10.00, 'Pieza de lechuga', 6, 1, 16, 25),
-(100041, 'Cilantro', 300, 8.00, 'Manojo de cilantro', 6, 1, 16, 25),
-(100042, 'Espinaca', 200, 15.00, 'Manojo de espinaca', 6, 1, 16, 20),
-(100043, 'Jícama', 250, 13.00, 'Kilogramo de jícama', 6, 1, 16, 25),
-(100044, 'Sandía', 200, 10.00, 'Kilogramo de sandía', 6, 1, 16, 20),
-(100045, 'Melón', 200, 12.00, 'Kilogramo de melón', 6, 1, 16, 20),
-(100046, 'Pera', 150, 38.00, 'Kilogramo de pera', 6, 1, 16, 15),
-(100047, 'Uva', 100, 50.00, 'Kilogramo de uva', 6, 1, 16, 10),
-(100048, 'Durazno', 150, 42.00, 'Kilogramo de durazno', 6, 1, 16, 15),
-(100049, 'Aguacate', 150, 75.00, 'Kilogramo de aguacate', 6, 1, 16, 15),
-(100050, 'Pepino', 250, 18.00, 'Kilogramo de pepino', 6, 1, 16, 25);
+(10000001, 'Tortilla de Maíz', 500, 20.00, 'Kilogramo de tortilla', 1, 1, 16, 50),
+(10000002, 'Frijol Negro', 300, 25.50, 'Kilogramo de frijol negro', 1, 1, 16, 30),
+(10000003, 'Arroz Blanco', 400, 22.30, 'Kilogramo de arroz', 1, 1, 16, 40),
+(10000004, 'Huevo', 100, 85.00, 'Caja de 12 huevos', 2, 1, 16, 10),
+(10000005, 'Aceite Vegetal', 200, 45.00, 'Botella de 1 litro', 3, 1, 16, 20),
+(10000006, 'Leche Entera', 150, 24.00, 'Litro de leche entera', 4, 1, 16, 15),
+(10000007, 'Azúcar', 350, 18.50, 'Kilogramo de azúcar refinada', 1, 1, 16, 25),
+(10000008, 'Sal', 400, 10.00, 'Paquete de 1 kilogramo', 1, 1, 16, 30),
+(10000009, 'Pan de Caja', 200, 35.00, 'Bolsa de pan de caja', 2, 1, 16, 10),
+(10000010, 'Café Soluble', 100, 95.00, 'Frasco de 200 gramos', 3, 1, 16, 10),
+(10000011, 'Pasta para Sopa', 300, 10.00, 'Paquete de 200 gramos', 1, 1, 16, 15),
+(10000012, 'Avena', 150, 15.50, 'Bolsa de 500 gramos', 1, 1, 16, 10),
+(10000013, 'Carne de Res', 80, 150.00, 'Kilogramo de carne de res', 5, 1, 16, 5),
+(10000014, 'Carne de Pollo', 100, 90.00, 'Kilogramo de carne de pollo', 5, 1, 16, 10),
+(10000015, 'Pescado', 50, 120.00, 'Kilogramo de pescado', 5, 1, 16, 5),
+(10000016, 'Tomate', 500, 15.00, 'Kilogramo de tomate', 6, 1, 16, 50),
+(10000017, 'Cebolla', 400, 18.00, 'Kilogramo de cebolla', 6, 1, 16, 40),
+(10000018, 'Papas', 350, 22.50, 'Kilogramo de papas', 6, 1, 16, 35),
+(10000019, 'Zanahoria', 400, 14.00, 'Kilogramo de zanahoria', 6, 1, 16, 30),
+(10000020, 'Manzana', 300, 35.00, 'Kilogramo de manzana', 6, 1, 16, 25),
+(10000021, 'Plátano', 400, 18.00, 'Kilogramo de plátano', 6, 1, 16, 30),
+(10000022, 'Naranja', 500, 12.50, 'Kilogramo de naranja', 6, 1, 16, 50),
+(10000023, 'Jitomate', 400, 18.00, 'Kilogramo de jitomate', 6, 1, 16, 40),
+(10000024, 'Chiles Secos', 150, 60.00, 'Kilogramo de chile seco', 6, 1, 16, 10),
+(10000025, 'Queso Fresco', 100, 75.00, 'Kilogramo de queso fresco', 4, 1, 16, 10),
+(10000026, 'Crema', 120, 25.00, 'Bote de 250 gramos', 4, 1, 16, 10),
+(10000027, 'Yogurt', 200, 22.00, 'Litro de yogurt', 4, 1, 16, 15),
+(10000028, 'Lentejas', 300, 23.50, 'Kilogramo de lentejas', 1, 1, 16, 30),
+(10000029, 'Atún en Lata', 150, 20.00, 'Lata de 140 gramos', 5, 1, 16, 10),
+(10000030, 'Sardinas en Lata', 120, 18.00, 'Lata de 200 gramos', 5, 1, 16, 10),
+(10000031, 'Harina de Trigo', 200, 12.50, 'Paquete de 1 kilogramo', 1, 1, 16, 20),
+(10000032, 'Galletas', 250, 25.00, 'Paquete de 400 gramos', 2, 1, 16, 25),
+(10000033, 'Mermelada', 100, 30.00, 'Frasco de 500 gramos', 3, 1, 16, 10),
+(10000034, 'Mayonesa', 150, 35.00, 'Frasco de 500 gramos', 3, 1, 16, 10),
+(10000035, 'Chocolate en Polvo', 100, 45.00, 'Caja de 500 gramos', 3, 1, 16, 10),
+(10000036, 'Pollo Entero', 80, 100.00, 'Kilogramo de pollo entero', 5, 1, 16, 5),
+(10000037, 'Chayote', 300, 12.00, 'Kilogramo de chayote', 6, 1, 16, 25),
+(10000038, 'Calabaza', 300, 15.00, 'Kilogramo de calabaza', 6, 1, 16, 25),
+(10000039, 'Pimiento', 200, 22.00, 'Kilogramo de pimiento', 6, 1, 16, 20),
+(10000040, 'Lechuga', 250, 10.00, 'Pieza de lechuga', 6, 1, 16, 25),
+(10000041, 'Cilantro', 300, 8.00, 'Manojo de cilantro', 6, 1, 16, 25),
+(10000042, 'Espinaca', 200, 15.00, 'Manojo de espinaca', 6, 1, 16, 20),
+(10000043, 'Jícama', 250, 13.00, 'Kilogramo de jícama', 6, 1, 16, 25),
+(10000044, 'Sandía', 200, 10.00, 'Kilogramo de sandía', 6, 1, 16, 20),
+(10000045, 'Melón', 200, 12.00, 'Kilogramo de melón', 6, 1, 16, 20),
+(10000046, 'Pera', 150, 38.00, 'Kilogramo de pera', 6, 1, 16, 15),
+(10000047, 'Uva', 100, 50.00, 'Kilogramo de uva', 6, 1, 16, 10),
+(10000048, 'Durazno', 150, 42.00, 'Kilogramo de durazno', 6, 1, 16, 15),
+(10000049, 'Aguacate', 150, 75.00, 'Kilogramo de aguacate', 6, 1, 16, 15),
+(10000050, 'Pepino', 250, 18.00, 'Kilogramo de pepino', 6, 1, 16, 25);
 
 create table venta(
 idVenta int (11) auto_increment primary key,
+idUsuario INT(11) NOT NULL,
+idCliente INT(11) NOT NULL,
 valorPagar double(10,2) not null,
-fechaVenta date not null
+fechaVenta date not null,
+CONSTRAINT fk_idUsuario FOREIGN KEY (idUsuario) REFERENCES usuario(idUsuario) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT fk_idCliente FOREIGN KEY (idCliente) REFERENCES clientes(idCliente) ON DELETE CASCADE ON UPDATE CASCADE
 );
-ALTER TABLE venta
-ADD COLUMN idUsuario INT(11) NOT NULL AFTER idVenta,
-ADD CONSTRAINT fk_idUsuario FOREIGN KEY (idUsuario) REFERENCES usuario(idUsuario) ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE venta
-ADD COLUMN idCliente INT(11) NOT NULL AFTER idUsuario,
-ADD CONSTRAINT fk_idCliente FOREIGN KEY (idCliente) REFERENCES clientes(idCliente) ON DELETE CASCADE ON UPDATE CASCADE;
-
 
 create table detalle_venta(
 idDetalleVenta int (11) auto_increment primary key,
@@ -199,7 +196,6 @@ BEGIN
 END $$
 DELIMITER ;
 
-
 DELIMITER $$
 CREATE PROCEDURE InsertarVentasSimuladas(
     IN cantidadVentas INT
@@ -243,12 +239,8 @@ BEGIN
         SET i = i + 1;
     END WHILE;
 END $$
-
 DELIMITER ;
 
-CALL InsertarVentasSimuladas(10);
-SELECT * FROM venta ORDER BY fechaVenta;
-SELECT * FROM detalle_venta ORDER BY idDetalleVenta;
 CALL InsertarVentasSimuladas(2000);
 
 CREATE VIEW reporte_ventas_mes AS
@@ -277,10 +269,6 @@ JOIN usuario u ON v.idUsuario = u.idUsuario
 GROUP BY u.idUsuario, YEAR(v.fechaVenta), MONTH(v.fechaVenta)
 ORDER BY anio DESC, mes DESC, totalVentas DESC;
 DROP VIEW IF EXISTS reporte_ventas_empleado;
-    
-SELECT * FROM reporte_ventas_mes
-WHERE MONTH(fecha) = 6 and year(fecha)=2024 
-ORDER BY fecha DESC;
 
 CREATE VIEW reporte_ventas_empleado AS
 SELECT 
@@ -293,10 +281,6 @@ FROM venta v
 JOIN usuario u ON v.idUsuario = u.idUsuario
 GROUP BY u.idUsuario, YEAR(v.fechaVenta), MONTH(v.fechaVenta)
 ORDER BY anio DESC, mes DESC, totalVentas DESC;
-
-SELECT * FROM reporte_ventas_empleado
-WHERE anio = 2024 AND mes = 2
-ORDER BY totalVentas DESC;
     
 CREATE VIEW reporte_ventas_trimestres AS
 SELECT
@@ -311,8 +295,6 @@ JOIN detalle_venta dv ON v.idVenta = dv.idVenta
 JOIN producto p ON dv.idProducto = p.idProducto
 GROUP BY p.nombre, YEAR(v.fechaVenta)
 ORDER BY anio DESC, producto;
-
-SELECT * FROM reporte_ventas_trimestres WHERE anio = 2024;
 
 CREATE TABLE auditoria_ventas (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -416,16 +398,3 @@ BEGIN
     RETURN cantidad;
 END $$
 DELIMITER ;
-
-select calcular_cantidad_productos(3);
-
-select * from auditoria_ventas;
-select * from venta;
-use ventas;
-
-update venta set valorPagar=20 where idVenta=6;
-
-
-
-
-

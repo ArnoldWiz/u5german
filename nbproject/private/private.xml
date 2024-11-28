@@ -3,13 +3,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/daos/DaoReportes.java</file>
-            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/conexion/Conexion.java</file>
-            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/Reportes.java</file>
+            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/Registro.java</file>
+            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/GestionarCliente.java</file>
             <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/ReporteMes.java</file>
-            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/Menu.java</file>
-            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/ReporteTrimestres.java</file>
+            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/Facturacion.java</file>
+            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/GestionarProduc.java</file>
             <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/ReporteEmpleado.java</file>
+            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/GestionarUsua.java</file>
+            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/Reportes.java</file>
+            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/GestionarCategoria.java</file>
+            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/Menu.java</file>
+            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/Cliente.java</file>
+            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/Categoria.java</file>
+            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/ReporteTrimestres.java</file>
+            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/Login.java</file>
+            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/daos/DaoCliente.java</file>
+            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/TextPrompt.java</file>
         </group>
     </open-files>
 </project-private>

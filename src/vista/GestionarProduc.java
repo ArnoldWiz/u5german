@@ -81,9 +81,12 @@ public class GestionarProduc extends javax.swing.JInternalFrame {
         DaoProducto daop = new DaoProducto();
         producto = daop.buscarProductoPorCodigo(txtCodigo.getText().trim());
         if (producto != null) {
-            vista.Producto p = new vista.Producto(producto);
-            jDesktopPane_menu.add(p);
-            p.setVisible(true);
+            if (producto.getEstado() == 1) {
+                vista.Producto p = new vista.Producto(producto);
+                jDesktopPane_menu.add(p);
+                p.setVisible(true);
+            }else
+                JOptionPane.showMessageDialog(null, "Producto no encontrado");
         } else
             JOptionPane.showMessageDialog(null, "Producto no encontrado");
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -94,7 +97,7 @@ public class GestionarProduc extends javax.swing.JInternalFrame {
             modelos.Producto producto = new modelos.Producto();
             DaoProducto daop = new DaoProducto();
             producto = daop.buscarProductoPorCodigo(txtCodigo.getText().trim());
-            if (producto != null && producto.getEstado()==1) {
+            if (producto != null && producto.getEstado() == 1) {
                 vista.Producto p = new vista.Producto(producto);
                 jDesktopPane_menu.add(p);
                 p.setVisible(true);

@@ -196,7 +196,7 @@ public class Producto extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Complete todos los campos");
         } else {
             p=controlProducto.buscarProductoPorCodigo(txt_Codigo.getText().trim());
-            if (!controlProducto.existeProducto(txt_nombre.getText().trim())) {
+            if (!controlProducto.existeProducto(txt_Codigo.getText().trim())) {
 
                 if (categoria.equalsIgnoreCase("Seleccione categoria:")) {
                     JOptionPane.showMessageDialog(null, "Seleccione categoria");
@@ -367,7 +367,7 @@ public class Producto extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "Se elimino correctamente");
             }else
                 JOptionPane.showMessageDialog(null, "Error al eliminar");
-            this.setVisible(true);
+            this.setVisible(false);
         } else {
             
         }

@@ -48,13 +48,15 @@ public class GestionarCategoria extends javax.swing.JInternalFrame {
         setIconifiable(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        btn_eliminar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btn_eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminar.png"))); // NOI18N
         btn_eliminar.setText("Eliminar");
         btn_eliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_eliminarActionPerformed(evt);
             }
         });
-        getContentPane().add(btn_eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 270, -1, -1));
+        getContentPane().add(btn_eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 270, 120, 30));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Variable", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -139,11 +141,14 @@ public class GestionarCategoria extends javax.swing.JInternalFrame {
 
     private void jTable_categoriasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_categoriasMouseClicked
         // TODO add your handling code here:
-        int fila_point = jTable_categorias.rowAtPoint(evt.getPoint());
-        if (fila_point > -1) {
-            int columna_point = 0; // Suponiendo que el idCategoria está en la primera columna (índice 0)
-            idCategoria = (int) jTable_categorias.getValueAt(fila_point, columna_point);  // Obtener el idCategoria de la fila
-            EnviarDatosCategoriaSeleccionada(idCategoria);  // Llamar al método para cargar los datos
+        int filaSeleccionada = jTable_categorias.rowAtPoint(evt.getPoint());
+        if (filaSeleccionada > -1) { // Verificar que se seleccionó una fila válida
+            // Suponiendo que el idCategoria está en la primera columna (índice 0)
+            idCategoria = (int) jTable_categorias.getValueAt(filaSeleccionada, 0);
+            String descripcion = (String) jTable_categorias.getValueAt(filaSeleccionada, 1); // Columna de descripción
+
+            // Llenar los datos en los campos correspondientes
+            txt_descripcion.setText(descripcion);
         }
     }//GEN-LAST:event_jTable_categoriasMouseClicked
 
@@ -191,6 +196,5 @@ public class GestionarCategoria extends javax.swing.JInternalFrame {
     private void EnviarDatosCategoriaSeleccionada(int idCategoria) {
         DaoCategoria daoCategoria = new DaoCategoria();
         Categoria categoria = daoCategoria.obtenerCategoriaPorId(idCategoria);
-
     }
 }

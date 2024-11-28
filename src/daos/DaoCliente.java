@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JComboBox;
 import modelos.Cliente;
 
 /**
@@ -17,6 +19,46 @@ import modelos.Cliente;
  * @author Alumno LMC
  */
 public class DaoCliente {
+
+    public int ObtenerIdClientePorNombre(String nombreCliente) {
+        Connection cn = Conexion.conectar(); // Asegúrate de que tu clase Conexion esté configurada correctamente
+        String sql = "SELECT idCliente FROM clientes WHERE nombre = ? AND estado = 1";
+        int idCliente = -1; // Valor por defecto si no se encuentra el cliente
+
+        try (PreparedStatement pst = cn.prepareStatement(sql)) {
+            pst.setString(1, nombreCliente); // Asignar el nombre al parámetro de la consulta
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    idCliente = rs.getInt("idCliente"); // Recuperar el id del cliente
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener el ID del cliente: " + e);
+        }
+
+        return idCliente;
+    }
+
+    public JComboBox<String> CargarComboClientes(JComboBox<String> jComboBox_cliente) {
+        Connection cn = Conexion.conectar(); // Asegúrate de que tu clase Conexion esté configurada correctamente
+        String sql = "SELECT * FROM clientes";
+
+        try (Statement st = cn.createStatement(); ResultSet rs = st.executeQuery(sql)) {
+
+            jComboBox_cliente.removeAllItems();
+            jComboBox_cliente.addItem("Seleccione cliente:");
+
+            while (rs.next()) {
+                if (rs.getInt("estado") == 1) { // Solo clientes activos
+                    jComboBox_cliente.addItem(rs.getString("nombre"));
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al cargar clientes: " + e);
+        }
+        return jComboBox_cliente;
+    }
 
     public void insertarCliente(String nombre, String telefono) {
         Connection connection = null;
@@ -174,7 +216,6 @@ public class DaoCliente {
 
                 // Ejecutar el procedimiento almacenado
                 callableStatement.execute();
-                System.out.println("Cliente actualizado exitosamente.");
             } else {
                 System.err.println("No se pudo establecer la conexión a la base de datos.");
             }
@@ -194,7 +235,7 @@ public class DaoCliente {
             }
         }
     }
-    
+
     public void eliminarCliente(String nombre) {
         Connection connection = null;
         CallableStatement callableStatement = null;
@@ -213,7 +254,6 @@ public class DaoCliente {
 
                 // Ejecutar el procedimiento almacenado
                 callableStatement.execute();
-                System.out.println("Cliente marcado como inactivo (eliminado lógicamente) exitosamente.");
             } else {
                 System.err.println("No se pudo establecer la conexión a la base de datos.");
             }
@@ -233,7 +273,7 @@ public class DaoCliente {
             }
         }
     }
-    
+
     // Método para restaurar un cliente (cambiar su estado a 1) utilizando el procedimiento almacenado RestaurarCliente
     public void restaurarCliente(String nombre) {
         Connection connection = null;
@@ -253,7 +293,6 @@ public class DaoCliente {
 
                 // Ejecutar el procedimiento almacenado
                 callableStatement.execute();
-                System.out.println("Cliente restaurado (marcado como activo) exitosamente.");
             } else {
                 System.err.println("No se pudo establecer la conexión a la base de datos.");
             }

@@ -76,6 +76,7 @@ public class Registro extends javax.swing.JFrame {
         btnRegistrar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         lblFondoRegistro = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -141,6 +142,9 @@ public class Registro extends javax.swing.JFrame {
         lblFondoRegistro.setText("jLabel1");
         getContentPane().add(lblFondoRegistro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 696, 490));
 
+        jButton1.setText("jButton1");
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(789, 436, -1, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -187,6 +191,7 @@ public class Registro extends javax.swing.JFrame {
     private javax.swing.JButton btnRegistrar;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel lblFondoRegistro;
     private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtNombre;
