@@ -32,7 +32,7 @@ CREATE TABLE clientes (
     estado INT(1) NOT NULL DEFAULT 1,
     direccion VARCHAR(255) DEFAULT NULL,
     email VARCHAR(100) DEFAULT NULL,
-    rfc VARCHAR(13) NOT NULL -- Se agrega la columna rfc con un tamaño de 13 caracteres
+    rfc VARCHAR(13) NOT NULL
 );
 
 INSERT INTO clientes (nombre, telefono, estado, direccion, email, rfc)
@@ -61,7 +61,7 @@ VALUES
 
 create table producto(
 idProducto int (11) auto_increment primary key,
-codigo int(20)	not null,
+codigo int(12)	not null,
 nombre varchar(100) not null,
 cantidad int(11) not null,
 precio double(10,2) not null,
@@ -324,78 +324,67 @@ CREATE TABLE auditoria_ventas (
     idVenta INT,
     accion VARCHAR(10),
     fechaCambio DATETIME,
-    idUsuario varchar(50),
+    Usuario varchar(50),
     detalles VARCHAR(255)
 );
 
-<<<<<<< HEAD
-
-
 DELIMITER $$
-
-=======
-DELIMITER $$
->>>>>>> 0984c16edc376b2da6df2805666a0e8a3acc6f7e
-CREATE TRIGGER auditoria_ventas_insert
+CREATE TRIGGER insertar_venta
 AFTER INSERT ON venta
 FOR EACH ROW
 BEGIN
-<<<<<<< HEAD
-    DECLARE nombre_usuario VARCHAR(100);
-    DECLARE apellido_usuario VARCHAR(100);
-    DECLARE detalles_cambio VARCHAR(255);
-    SELECT nombre, apellido INTO nombre_usuario, apellido_usuario 
-    FROM usuario 
-    WHERE usuario = USER();
-    SET detalles_cambio = CONCAT('Venta insertada: ', NEW.idVenta);
-    INSERT INTO auditoria_ventas (idVenta, accion, fechaCambio, idUsuario, detalles)
-    VALUES (NEW.idVenta, 'INSERT', NOW(), CONCAT(nombre_usuario, ' ', apellido_usuario), detalles_cambio);
-=======
-    DECLARE detalles_cambio VARCHAR(255);
-    DECLARE nombre_completo VARCHAR(255);
-    
-    -- Obtener el nombre completo del usuario asociado a la venta
-    SET nombre_completo = (SELECT CONCAT(nombre, ' ', apellido) 
-                           FROM usuario 
-                           WHERE idUsuario = NEW.idUsuario);
-    
-    -- Crear el mensaje para la auditoría
-    SET detalles_cambio = CONCAT('Venta insertada: ', NEW.idVenta, ' por ', nombre_completo);
-    
-    -- Insertar en la tabla auditoria_ventas
-    INSERT INTO auditoria_ventas (idVenta, accion, fechaCambio, idUsuario, detalles)
-    VALUES (NEW.idVenta, 'INSERT', NOW(), NEW.idUsuario, detalles_cambio);
->>>>>>> 0984c16edc376b2da6df2805666a0e8a3acc6f7e
+    DECLARE nombreUsuario VARCHAR(50);
+    SELECT CONCAT(nombre, ' ', apellido)
+    INTO nombreUsuario
+    FROM usuario
+    WHERE idUsuario = NEW.idUsuario;
+    INSERT INTO auditoria_ventas (idVenta, accion, fechaCambio, Usuario, detalles)
+    VALUES (NEW.idVenta, 'INSERT', NOW(), nombreUsuario, 'Inserto venta');
 END $$
-
 DELIMITER ;
 
-
 DELIMITER $$
-CREATE TRIGGER auditoria_ventas_update
+CREATE TRIGGER actualizar_venta
 AFTER UPDATE ON venta
 FOR EACH ROW
 BEGIN
-    DECLARE usuario_id INT;
-    DECLARE detalles_cambio VARCHAR(255);
-    SET usuario_id = (SELECT idUsuario FROM usuario WHERE usuario = USER());
-    SET detalles_cambio = CONCAT('Venta actualizada: ', OLD.idVenta, ' a ', NEW.idVenta);
-    INSERT INTO auditoria_ventas (idVenta, accion, fechaCambio, idUsuario, detalles)
-    VALUES (NEW.idVenta, 'UPDATE', NOW(), current_user(), detalles_cambio);
+    DECLARE cambios VARCHAR(255);
+    SET cambios = '';
+    
+    IF OLD.idUsuario != NEW.idUsuario THEN
+        SET cambios = CONCAT(cambios, 'idUsuario: ', OLD.idUsuario, ' -> ', NEW.idUsuario);
+    END IF;
+
+    IF OLD.idCliente != NEW.idCliente THEN
+        SET cambios = CONCAT(cambios, 'idCliente: ', OLD.idCliente, ' -> ', NEW.idCliente);
+    END IF;
+
+    IF OLD.valorPagar != NEW.valorPagar THEN
+        SET cambios = CONCAT(cambios, 'valorPagar: ', OLD.valorPagar, ' -> ', NEW.valorPagar);
+    END IF;
+
+    IF OLD.fechaVenta != NEW.fechaVenta THEN
+        SET cambios = CONCAT(cambios, 'fechaVenta: ', OLD.fechaVenta, ' -> ', NEW.fechaVenta);
+    END IF;
+    
+    IF OLD.estado != NEW.estado THEN
+        SET cambios = CONCAT(cambios, 'estado: ', OLD.estado, ' -> ', NEW.estado);
+    END IF;
+    
+    INSERT INTO auditoria_ventas (idVenta, accion, fechaCambio, Usuario, detalles)
+    VALUES (OLD.idVenta, 'UPDATE', NOW(), CURRENT_USER(), cambios);
 END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE TRIGGER auditoria_ventas_delete
+CREATE TRIGGER eliminar_venta
 AFTER DELETE ON venta
 FOR EACH ROW
 BEGIN
-    DECLARE usuario_id INT;
-    DECLARE detalles_cambio VARCHAR(255);
-    SET usuario_id = (SELECT idUsuario FROM usuario WHERE usuario = USER());
-    SET detalles_cambio = CONCAT('Venta eliminada: ', OLD.idVenta);
-    INSERT INTO auditoria_ventas (idVenta, accion, fechaCambio, idUsuario, detalles)
-    VALUES (OLD.idVenta, 'DELETE', NOW(), current_user(), detalles_cambio);
+    INSERT INTO auditoria_ventas (idVenta, accion, fechaCambio, Usuario, detalles)
+    VALUES (
+        OLD.idVenta, 'DELETE', NOW(), CURRENT_USER(),'Eliminó venta'
+    );
 END $$
 DELIMITER ;
 
@@ -450,4 +439,5 @@ BEGIN
 END $$
 DELIMITER ;
 
-
+call InsertarVentasSimuladas(10);
+select * from auditoria_ventas;
