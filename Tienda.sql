@@ -440,4 +440,4 @@ END $$
 DELIMITER ;
 
 call InsertarVentasSimuladas(10);
-select * from auditoria_ventas;
+
