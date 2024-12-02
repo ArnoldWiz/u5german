@@ -297,7 +297,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem3_nuevo_productoActionPerformed
 
     private void jMenuItem_gestionar_productoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_gestionar_productoActionPerformed
-        GestionarProduc interGestionarProducto = new GestionarProduc();
+        GestionarProdcutos interGestionarProducto = new GestionarProdcutos();
         jDesktopPane_menu.add(interGestionarProducto);
         interGestionarProducto.setVisible(true);
     }//GEN-LAST:event_jMenuItem_gestionar_productoActionPerformed
@@ -379,7 +379,7 @@ public class Menu extends javax.swing.JFrame {
 
     private void jMenuItem_gestionar_usuario1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_gestionar_usuario1ActionPerformed
         // TODO add your handling code here:
-        GestionarCliente interProducto = new GestionarCliente();
+        GestionarClientes interProducto = new GestionarClientes();
         jDesktopPane_menu.add(interProducto);
         interProducto.setVisible(true);
     }//GEN-LAST:event_jMenuItem_gestionar_usuario1ActionPerformed

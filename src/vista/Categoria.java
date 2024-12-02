@@ -76,7 +76,6 @@ public class Categoria extends javax.swing.JInternalFrame {
         
         modelos.Categoria c;
         
-        //validamos camoos vacios
         if (txt_descripcion.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Complete  todos los campos");
         } else {
@@ -101,7 +100,6 @@ public class Categoria extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "La Categoria ya esta registrada en la Base de Datos");
             }
         }
-        //limpiar campo
         txt_descripcion.setText("");
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -111,7 +109,6 @@ public class Categoria extends javax.swing.JInternalFrame {
             modelos.Categoria categoria = new modelos.Categoria();
             DaoCategoria controlCategoria = new DaoCategoria();
 
-            //validamos camoos vacios
             if (txt_descripcion.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Complete  todos los campos");
             } else {
@@ -127,7 +124,6 @@ public class Categoria extends javax.swing.JInternalFrame {
                     JOptionPane.showMessageDialog(null, "La Categoria ya esta registrada en la Base de Datos");
                 }
             }
-            //limpiar campo
             txt_descripcion.setText("");
         }
     }//GEN-LAST:event_txt_descripcionKeyReleased

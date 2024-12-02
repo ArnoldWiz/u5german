@@ -1,7 +1,5 @@
 drop database if exists ventas;
-
 create database ventas;
-
 use ventas;
 
 create table usuario(
@@ -31,21 +29,20 @@ CREATE TABLE clientes (
     idCliente INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     telefono VARCHAR(15),
-    estado INT(1) NOT NULL DEFAULT 1
+    estado INT(1) NOT NULL DEFAULT 1,
+    direccion VARCHAR(255) DEFAULT NULL,
+    email VARCHAR(100) DEFAULT NULL,
+    rfc VARCHAR(13) NOT NULL -- Se agrega la columna rfc con un tamaño de 13 caracteres
 );
 
-INSERT INTO clientes (nombre, telefono, estado)
+INSERT INTO clientes (nombre, telefono, estado, direccion, email, rfc)
 VALUES
-('TechCorp', '5551234567', 1),
-('AgroMex', '2227654321', 1),
-('EcoVida', '3339876543', 1),
-('LogiTrans', '8185432190', 1),
-('Construcsa', '4426543219', 1),
-('BioFarm', '9991239876', 1),
-('FoodMex', '4778765432', 1),
-('FinTech', '5567890123', 1),
-('GlobalPro', '6647651234', 1),
-('AquaPur', '7223456789', 1);
+('TechCorp', '5551234567', 1, 'Av. Tecnológica 101, Monterrey', 'info@techcorp.com', 'TEC123456789'),
+('AgroMex', '2227654321', 1, 'Carr. Nacional 54, Puebla', 'ventas@agromex.com', 'AGM123456789'),
+('EcoVida', '3339876543', 1, 'Calle Verde 25, Guadalajara', 'contacto@ecovida.com', 'ECO123456789'),
+('LogiTrans', '8185432190', 1, 'Autopista Logística Km 7, Monterrey', 'logistica@logitrans.com', 'LOG123456789'),
+('Construcsa', '4426543219', 1, 'Calle Construcción 89, Querétaro', 'info@construcsa.com', 'CON123456789'),
+('BioFarm', '9991239876', 1, 'Col. Rural 11, Mérida', 'contacto@biofarm.com', 'BIO123456789');
 
 create table categoria(
 idCategoria int (11) auto_increment primary key,
@@ -135,6 +132,7 @@ idUsuario INT(11) NOT NULL,
 idCliente INT(11) NOT NULL,
 valorPagar double(10,2) not null,
 fechaVenta date not null,
+estado tinyint(1) not null default 1,
 CONSTRAINT fk_idUsuario FOREIGN KEY (idUsuario) REFERENCES usuario(idUsuario) ON DELETE CASCADE ON UPDATE CASCADE,
 CONSTRAINT fk_idCliente FOREIGN KEY (idCliente) REFERENCES clientes(idCliente) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -148,29 +146,42 @@ precioUnitario double(10,2) not null,
 subtotal double(10,2) not null,
 totalPagar double(10,2) not null,
 iva tinyint not null,
-CONSTRAINT fk_idVenta FOREIGN KEY (idVenta) REFERENCES venta(idVenta) ON DELETE CASCADE ON UPDATE CASCADE
+CONSTRAINT fk_idVenta FOREIGN KEY (idVenta) REFERENCES venta(idVenta) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT fk_idProducto FOREIGN KEY (idProducto) REFERENCES producto(idProducto) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 DELIMITER $$
 CREATE PROCEDURE InsertarCliente(
     IN p_nombre VARCHAR(50),
     IN p_telefono VARCHAR(15),
-    IN p_estado INT
+    IN p_estado INT,
+    IN p_direccion VARCHAR(255),
+    IN p_email VARCHAR(100),
+    IN p_rfc VARCHAR(13)
 )
 BEGIN
-    INSERT INTO clientes (nombre, telefono, estado)
-    VALUES (p_nombre, p_telefono, p_estado);
+    INSERT INTO clientes (nombre, telefono, estado, direccion, email, rfc)
+    VALUES (p_nombre, p_telefono, p_estado, p_direccion, p_email, p_rfc);
 END $$
 DELIMITER ;
 
 DELIMITER $$
 CREATE PROCEDURE UpdateCliente(
-	in p_nombre varchar(50),
+    IN p_nombre VARCHAR(50),
     IN p_telefono VARCHAR(15),
-    IN p_estado INT
+    IN p_estado INT,
+    IN p_direccion VARCHAR(255),
+    IN p_email VARCHAR(100),
+    IN p_rfc VARCHAR(13)
 )
 BEGIN
-    update cliente set telefono=p_telefono, estado=p_estado where nombre=p_nombre;
+    UPDATE clientes 
+    SET telefono = p_telefono, 
+        estado = p_estado, 
+        direccion = p_direccion, 
+        email = p_email,
+        rfc = p_rfc
+    WHERE nombre = p_nombre;
 END $$
 DELIMITER ;
 
@@ -202,6 +213,7 @@ CREATE PROCEDURE InsertarVentasSimuladas(
 )
 BEGIN
     DECLARE i INT DEFAULT 0;
+    DECLARE j INT DEFAULT 0;
     DECLARE maxEmpleados INT;
     DECLARE maxClientes INT;
     DECLARE maxProductos INT;
@@ -209,39 +221,50 @@ BEGIN
     DECLARE randCliente INT;
     DECLARE randProducto INT;
     DECLARE randCantidad INT;
+    DECLARE randDetalles INT;
     DECLARE fechaVenta DATE;
     DECLARE precioProducto DOUBLE;
     DECLARE totalVenta DOUBLE;
+    DECLARE nuevoIdVenta INT;
+
     SELECT MAX(idUsuario) INTO maxEmpleados FROM usuario;
     SELECT MAX(idCliente) INTO maxClientes FROM clientes;
     SELECT MAX(idProducto) INTO maxProductos FROM producto;
-    
+
     WHILE i < cantidadVentas DO
         SET randEmpleado = FLOOR(1 + RAND() * maxEmpleados); 
         SET randCliente = FLOOR(1 + RAND() * maxClientes); 
-        SET randProducto = FLOOR(1 + RAND() * maxProductos); 
-        SET randCantidad = FLOOR(1 + RAND() * 10);
         SET fechaVenta = MAKEDATE(YEAR(CURDATE()), 1) + INTERVAL FLOOR(RAND() * 365) DAY;
-        SELECT precio INTO precioProducto FROM producto WHERE idProducto = randProducto;
-        SET totalVenta = randCantidad * precioProducto;
+        SET randDetalles = FLOOR(1 + RAND() * 5);
+        SET j = 0;
+        SET totalVenta = 0;
         INSERT INTO venta (idUsuario, idCliente, valorPagar, fechaVenta)
-        VALUES (randEmpleado, randCliente, totalVenta, fechaVenta);
-        INSERT INTO detalle_venta (idVenta, idProducto, cantidad, precioUnitario, subtotal, totalPagar, iva)
-        VALUES (
-            LAST_INSERT_ID(), 
-            randProducto, 
-            randCantidad, 
-            precioProducto, 
-            randCantidad * precioProducto, 
-            randCantidad * precioProducto * 1.16,
-            16
-        );
+        VALUES (randEmpleado, randCliente, 0, fechaVenta);
+        SET nuevoIdVenta = LAST_INSERT_ID();
+        WHILE j < randDetalles DO
+            SET randProducto = FLOOR(1 + RAND() * maxProductos); 
+            SET randCantidad = FLOOR(1 + RAND() * 10);
+            SELECT precio INTO precioProducto FROM producto WHERE idProducto = randProducto;
+            SET totalVenta = totalVenta + randCantidad * precioProducto * 1.16;
+            INSERT INTO detalle_venta (idVenta, idProducto, cantidad, precioUnitario, subtotal, totalPagar, iva)
+            VALUES (
+                nuevoIdVenta,
+                randProducto, 
+                randCantidad, 
+                precioProducto, 
+                randCantidad * precioProducto, 
+                randCantidad * precioProducto * 1.16,
+                16
+            );
+            SET j = j + 1;
+        END WHILE;
+        UPDATE venta
+        SET valorPagar = totalVenta
+        WHERE idVenta = nuevoIdVenta;
         SET i = i + 1;
     END WHILE;
 END $$
 DELIMITER ;
-
-CALL InsertarVentasSimuladas(2000);
 
 CREATE VIEW reporte_ventas_mes AS
 SELECT 
@@ -306,18 +329,26 @@ CREATE TABLE auditoria_ventas (
 );
 DELIMITER $$
 
+
+
+DELIMITER $$
+
 CREATE TRIGGER auditoria_ventas_insert
 AFTER INSERT ON venta
 FOR EACH ROW
 BEGIN
-    DECLARE usuario_id INT;
+    DECLARE nombre_usuario VARCHAR(100);
+    DECLARE apellido_usuario VARCHAR(100);
     DECLARE detalles_cambio VARCHAR(255);
-    SET usuario_id = (SELECT idUsuario FROM usuario WHERE usuario = USER());
+    SELECT nombre, apellido INTO nombre_usuario, apellido_usuario 
+    FROM usuario 
+    WHERE usuario = USER();
     SET detalles_cambio = CONCAT('Venta insertada: ', NEW.idVenta);
     INSERT INTO auditoria_ventas (idVenta, accion, fechaCambio, idUsuario, detalles)
-    VALUES (NEW.idVenta, 'INSERT', NOW(), usuario_id, detalles_cambio);
+    VALUES (NEW.idVenta, 'INSERT', NOW(), CONCAT(nombre_usuario, ' ', apellido_usuario), detalles_cambio);
 END $$
 DELIMITER ;
+
 
 DELIMITER $$
 CREATE TRIGGER auditoria_ventas_update

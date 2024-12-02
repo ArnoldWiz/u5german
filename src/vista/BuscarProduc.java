@@ -13,12 +13,12 @@ import static vista.Menu.jDesktopPane_menu;
  *
  * @author barre
  */
-public class GestionarProduc extends javax.swing.JInternalFrame {
+public class BuscarProduc extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form GestionarProduc
      */
-    public GestionarProduc() {
+    public BuscarProduc() {
         initComponents();
         this.setSize(new Dimension(400, 200));
         this.setTitle("Buscar Producto");

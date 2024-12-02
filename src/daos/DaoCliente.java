@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JComboBox;
+import javax.swing.table.DefaultTableModel;
 import modelos.Cliente;
 
 /**
@@ -21,15 +22,15 @@ import modelos.Cliente;
 public class DaoCliente {
 
     public int ObtenerIdClientePorNombre(String nombreCliente) {
-        Connection cn = Conexion.conectar(); // Asegúrate de que tu clase Conexion esté configurada correctamente
+        Connection cn = Conexion.conectar(); 
         String sql = "SELECT idCliente FROM clientes WHERE nombre = ? AND estado = 1";
-        int idCliente = -1; // Valor por defecto si no se encuentra el cliente
+        int idCliente = -1; 
 
         try (PreparedStatement pst = cn.prepareStatement(sql)) {
-            pst.setString(1, nombreCliente); // Asignar el nombre al parámetro de la consulta
+            pst.setString(1, nombreCliente); 
             try (ResultSet rs = pst.executeQuery()) {
                 if (rs.next()) {
-                    idCliente = rs.getInt("idCliente"); // Recuperar el id del cliente
+                    idCliente = rs.getInt("idCliente"); 
                 }
             }
         } catch (SQLException e) {
@@ -40,7 +41,7 @@ public class DaoCliente {
     }
 
     public JComboBox<String> CargarComboClientes(JComboBox<String> jComboBox_cliente) {
-        Connection cn = Conexion.conectar(); // Asegúrate de que tu clase Conexion esté configurada correctamente
+        Connection cn = Conexion.conectar(); 
         String sql = "SELECT * FROM clientes";
 
         try (Statement st = cn.createStatement(); ResultSet rs = st.executeQuery(sql)) {
@@ -49,7 +50,7 @@ public class DaoCliente {
             jComboBox_cliente.addItem("Seleccione cliente:");
 
             while (rs.next()) {
-                if (rs.getInt("estado") == 1) { // Solo clientes activos
+                if (rs.getInt("estado") == 1) { 
                     jComboBox_cliente.addItem(rs.getString("nombre"));
                 }
             }
@@ -60,7 +61,97 @@ public class DaoCliente {
         return jComboBox_cliente;
     }
 
-    public void insertarCliente(String nombre, String telefono) {
+    // Método para verificar si un cliente ya existe por nombre
+    public boolean clienteExiste(String nombre) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = Conexion.conectar();
+            if (connection != null) {
+                String sql = "SELECT COUNT(*) FROM clientes WHERE nombre = ?";
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, nombre);
+                resultSet = preparedStatement.executeQuery();
+
+                if (resultSet.next()) {
+                    int count = resultSet.getInt(1);
+                    return count > 0; 
+                }
+            } else {
+                System.err.println("No se pudo establecer la conexión a la base de datos.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al verificar cliente: " + e.getMessage());
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                System.err.println("Error al cerrar la conexión: " + e.getMessage());
+            }
+        }
+        return false;
+    }
+
+    public Cliente buscarClientePorNombre(String nombre) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Cliente cliente = null;
+
+        try {
+            connection = Conexion.conectar();
+
+            if (connection != null) {
+                String sql = "SELECT * FROM clientes WHERE nombre = ?";
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, nombre);
+
+                resultSet = preparedStatement.executeQuery();
+
+                if (resultSet.next()) {
+                    int idCliente = resultSet.getInt("idCliente");
+                    String telefono = resultSet.getString("telefono");
+                    int estado = resultSet.getInt("estado");
+                    String direccion = resultSet.getString("direccion");
+                    String email = resultSet.getString("email");
+                    String rfc = resultSet.getString("rfc");
+                    cliente = new Cliente(idCliente, nombre, telefono, estado, direccion, email, rfc);
+                }
+            } else {
+                System.err.println("No se pudo establecer la conexión a la base de datos.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al buscar cliente: " + e.getMessage());
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                System.err.println("Error al cerrar la conexión: " + e.getMessage());
+            }
+        }
+
+        return cliente;
+    }
+
+    public void insertarCliente(String nombre, String telefono, String direccion, String email, String rfc) {
         Connection connection = null;
         CallableStatement callableStatement = null;
 
@@ -68,12 +159,15 @@ public class DaoCliente {
             connection = Conexion.conectar();
 
             if (connection != null) {
-                String sql = "{CALL InsertarCliente(?, ?, ?)}";
+                String sql = "{CALL InsertarCliente(?, ?, ?, ?, ?, ?)}";
                 callableStatement = connection.prepareCall(sql);
 
-                callableStatement.setString(1, nombre);
-                callableStatement.setString(2, telefono);
-                callableStatement.setInt(3, 1);
+                callableStatement.setString(1, nombre);      
+                callableStatement.setString(2, telefono);    
+                callableStatement.setInt(3, 1);             
+                callableStatement.setString(4, direccion);   
+                callableStatement.setString(5, email);       
+                callableStatement.setString(6, rfc);         
 
                 callableStatement.execute();
             } else {
@@ -95,126 +189,24 @@ public class DaoCliente {
         }
     }
 
-    // Método para verificar si un cliente ya existe por nombre
-    public boolean clienteExiste(String nombre) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-
-        try {
-            // Obtener la conexión desde la clase Conexion
-            connection = Conexion.conectar();
-
-            if (connection != null) {
-                // Consulta para verificar si el cliente existe
-                String sql = "SELECT COUNT(*) FROM clientes WHERE nombre = ?";
-                preparedStatement = connection.prepareStatement(sql);
-                preparedStatement.setString(1, nombre);
-
-                // Ejecutar la consulta
-                resultSet = preparedStatement.executeQuery();
-
-                // Si hay resultados, verificar el conteo
-                if (resultSet.next()) {
-                    int count = resultSet.getInt(1);
-                    return count > 0; // Devuelve true si existe al menos un cliente con el nombre
-                }
-            } else {
-                System.err.println("No se pudo establecer la conexión a la base de datos.");
-            }
-        } catch (SQLException e) {
-            System.err.println("Error al verificar cliente: " + e.getMessage());
-        } finally {
-            // Cerrar los recursos
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                System.err.println("Error al cerrar la conexión: " + e.getMessage());
-            }
-        }
-        return false; // Devuelve false si ocurre un error o no se encuentra el cliente
-    }
-
-    public Cliente buscarClientePorNombre(String nombre) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        Cliente cliente = null;
-
-        try {
-            // Obtener la conexión desde la clase Conexion
-            connection = Conexion.conectar();
-
-            if (connection != null) {
-                // Consulta para buscar el cliente por nombre
-                String sql = "SELECT * FROM clientes WHERE nombre = ?";
-                preparedStatement = connection.prepareStatement(sql);
-                preparedStatement.setString(1, nombre);
-
-                // Ejecutar la consulta
-                resultSet = preparedStatement.executeQuery();
-
-                // Si se encuentra el cliente, crear un objeto Cliente
-                if (resultSet.next()) {
-                    int idCliente = resultSet.getInt("idCliente");
-                    String telefono = resultSet.getString("telefono");
-                    int estado = resultSet.getInt("estado");
-
-                    cliente = new Cliente(idCliente, nombre, telefono, estado);
-                }
-            } else {
-                System.err.println("No se pudo establecer la conexión a la base de datos.");
-            }
-        } catch (SQLException e) {
-            System.err.println("Error al buscar cliente: " + e.getMessage());
-        } finally {
-            // Cerrar los recursos
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                System.err.println("Error al cerrar la conexión: " + e.getMessage());
-            }
-        }
-
-        return cliente; // Devuelve el cliente o null si no se encontró
-    }
-    // Método para actualizar un cliente utilizando el procedimiento almacenado UpdateCliente
-
-    public void actualizarCliente(String nombre, String telefono, int estado) {
+    public void actualizarCliente(String nombre, String telefono, String direccion, String email, String rfc) {
         Connection connection = null;
         CallableStatement callableStatement = null;
 
         try {
-            // Obtener la conexión desde la clase Conexion
             connection = Conexion.conectar();
 
             if (connection != null) {
-                // Preparar la llamada al procedimiento almacenado
-                String sql = "{CALL UpdateCliente(?, ?, ?)}";
+                String sql = "{CALL UpdateCliente(?, ?, ?, ?, ?, ?)}";
                 callableStatement = connection.prepareCall(sql);
 
-                // Establecer los parámetros del procedimiento almacenado
-                callableStatement.setString(1, nombre);    // p_nombre
-                callableStatement.setString(2, telefono);  // p_telefono
-                callableStatement.setInt(3, estado);       // p_estado
+                callableStatement.setString(1, nombre);     
+                callableStatement.setString(2, telefono);   
+                callableStatement.setInt(3, 1);         
+                callableStatement.setString(4, direccion);   
+                callableStatement.setString(5, email);       
+                callableStatement.setString(6, rfc);         
 
-                // Ejecutar el procedimiento almacenado
                 callableStatement.execute();
             } else {
                 System.err.println("No se pudo establecer la conexión a la base de datos.");
@@ -222,7 +214,6 @@ public class DaoCliente {
         } catch (SQLException e) {
             System.err.println("Error al actualizar cliente: " + e.getMessage());
         } finally {
-            // Cerrar los recursos
             try {
                 if (callableStatement != null) {
                     callableStatement.close();
@@ -241,18 +232,14 @@ public class DaoCliente {
         CallableStatement callableStatement = null;
 
         try {
-            // Obtener la conexión desde la clase Conexion
             connection = Conexion.conectar();
 
             if (connection != null) {
-                // Preparar la llamada al procedimiento almacenado
                 String sql = "{CALL EliminarCliente(?)}";
                 callableStatement = connection.prepareCall(sql);
 
-                // Establecer el parámetro del procedimiento almacenado
-                callableStatement.setString(1, nombre);    // p_nombre
+                callableStatement.setString(1, nombre);
 
-                // Ejecutar el procedimiento almacenado
                 callableStatement.execute();
             } else {
                 System.err.println("No se pudo establecer la conexión a la base de datos.");
@@ -260,7 +247,6 @@ public class DaoCliente {
         } catch (SQLException e) {
             System.err.println("Error al eliminar cliente: " + e.getMessage());
         } finally {
-            // Cerrar los recursos
             try {
                 if (callableStatement != null) {
                     callableStatement.close();
@@ -274,24 +260,19 @@ public class DaoCliente {
         }
     }
 
-    // Método para restaurar un cliente (cambiar su estado a 1) utilizando el procedimiento almacenado RestaurarCliente
     public void restaurarCliente(String nombre) {
         Connection connection = null;
         CallableStatement callableStatement = null;
 
         try {
-            // Obtener la conexión desde la clase Conexion
             connection = Conexion.conectar();
 
             if (connection != null) {
-                // Preparar la llamada al procedimiento almacenado
                 String sql = "{CALL RestaurarCliente(?)}";
                 callableStatement = connection.prepareCall(sql);
 
-                // Establecer el parámetro del procedimiento almacenado
-                callableStatement.setString(1, nombre);    // p_nombre
+                callableStatement.setString(1, nombre); 
 
-                // Ejecutar el procedimiento almacenado
                 callableStatement.execute();
             } else {
                 System.err.println("No se pudo establecer la conexión a la base de datos.");
@@ -299,7 +280,6 @@ public class DaoCliente {
         } catch (SQLException e) {
             System.err.println("Error al restaurar cliente: " + e.getMessage());
         } finally {
-            // Cerrar los recursos
             try {
                 if (callableStatement != null) {
                     callableStatement.close();
@@ -312,4 +292,51 @@ public class DaoCliente {
             }
         }
     }
+
+    public DefaultTableModel cargarTablaClientes() {
+        Connection con = null;
+        DefaultTableModel model = new DefaultTableModel();
+        String sql = "SELECT idCliente, nombre, telefono, direccion, email, estado FROM clientes";
+        Statement st;
+
+        try {
+            con = Conexion.conectar();
+            con.setAutoCommit(false);
+
+            st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            // Agregar las columnas al modelo
+            model.addColumn("idCliente");
+            model.addColumn("nombre");
+            model.addColumn("telefono");
+            model.addColumn("direccion");
+            model.addColumn("email");
+            model.addColumn("estado");
+            while (rs.next()) {
+                if (rs.getInt("estado") == 1) { 
+                    Object fila[] = new Object[6];
+                    for (int i = 0; i < 6; i++) {
+                        fila[i] = rs.getObject(i + 1); 
+                    }
+                    model.addRow(fila);
+                }
+            }
+
+            con.commit();
+            con.close();
+        } catch (SQLException e) {
+            try {
+                if (con != null) {
+                    con.rollback();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error al hacer rollback: " + ex);
+            }
+            System.out.println("Error al llenar la tabla clientes: " + e);
+        }
+
+        return model;
+    }
+
 }

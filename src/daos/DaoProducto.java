@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.table.DefaultTableModel;
 import modelos.Producto;
 
 /**
@@ -21,7 +23,7 @@ public class DaoProducto {
             cn.setAutoCommit(false);
 
             PreparedStatement consulta = cn.prepareStatement("INSERT INTO producto VALUES(?,?,?,?,?,?,?,?,?,?)");
-            consulta.setInt(1, 0);  // id
+            consulta.setInt(1, 0);  
             consulta.setString(3, objeto.getNombre());
             consulta.setInt(4, objeto.getCantidad());
             consulta.setDouble(5, objeto.getPrecio());
@@ -185,6 +187,117 @@ public class DaoProducto {
         }
 
         return actualizado;
+    }
+
+    public DefaultTableModel cargarTablaProductos() {
+        Connection con = null;
+        DefaultTableModel model = new DefaultTableModel();
+        String sql = "SELECT p.idProducto, p.codigo, p.nombre, p.cantidad, p.precio, p.descripcion, c.descripcion AS categoria, p.minimo "
+                + "FROM producto p "
+                + "JOIN categoria c ON p.idCategoria = c.idCategoria "
+                + "WHERE p.estado = 1"; 
+        Statement st;
+
+        try {
+            con = Conexion.conectar();
+            con.setAutoCommit(false);
+
+            st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            model.addColumn("idProducto");
+            model.addColumn("Codigo");
+            model.addColumn("Nombre");
+            model.addColumn("Cantidad");
+            model.addColumn("Precio");
+            model.addColumn("Descripcion");
+            model.addColumn("Categoria");
+            model.addColumn("Minimo");
+
+            while (rs.next()) {
+                Object fila[] = new Object[8];  
+                fila[0] = rs.getObject(1);  
+                fila[1] = rs.getObject(2);  
+                fila[2] = rs.getObject(3);  
+                fila[3] = rs.getObject(4);  
+                fila[4] = rs.getObject(5);  
+                fila[5] = rs.getObject(6); 
+                fila[6] = rs.getObject(7);  
+                fila[7] = rs.getObject(8);  
+
+                model.addRow(fila);
+            }
+
+            con.commit();
+            con.close();
+        } catch (SQLException e) {
+            try {
+                if (con != null) {
+                    con.rollback();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error al hacer rollback: " + ex);
+            }
+            System.out.println("Error al llenar la tabla productos: " + e);
+        }
+
+        return model; 
+    }
+    
+        public int obtenerStockProducto(int idProducto) {
+        Connection cn = null;
+        int stock = -1;
+        try {
+            cn = Conexion.conectar();
+            String sql = "SELECT cantidad FROM producto WHERE idProducto = ?";
+            PreparedStatement pst = cn.prepareStatement(sql);
+            pst.setInt(1, idProducto);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                stock = rs.getInt("cantidad");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener el stock del producto: " + e);
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Error al cerrar la conexión: " + e);
+            }
+        }
+        return stock;
+    }
+        
+        public boolean actualizarStock(int idProducto, int nuevoStock) {
+        Connection cn = null;
+        try {
+            cn = Conexion.conectar();
+            
+            String sql = "UPDATE producto SET cantidad = ? WHERE idProducto = ?";
+            PreparedStatement pst = cn.prepareStatement(sql);
+            pst.setInt(1, nuevoStock); 
+            pst.setInt(2, idProducto);
+
+            int filasActualizadas = pst.executeUpdate();
+            
+            if (filasActualizadas > 0) {
+                return true;
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Error al actualizar el stock: " + e.getMessage());
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Error al cerrar la conexión: " + e.getMessage());
+            }
+        }
+        return false; 
     }
 
 }

@@ -142,12 +142,9 @@ public class GestionarCategoria extends javax.swing.JInternalFrame {
     private void jTable_categoriasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_categoriasMouseClicked
         // TODO add your handling code here:
         int filaSeleccionada = jTable_categorias.rowAtPoint(evt.getPoint());
-        if (filaSeleccionada > -1) { // Verificar que se seleccionó una fila válida
-            // Suponiendo que el idCategoria está en la primera columna (índice 0)
+        if (filaSeleccionada > -1) {
             idCategoria = (int) jTable_categorias.getValueAt(filaSeleccionada, 0);
-            String descripcion = (String) jTable_categorias.getValueAt(filaSeleccionada, 1); // Columna de descripción
-
-            // Llenar los datos en los campos correspondientes
+            String descripcion = (String) jTable_categorias.getValueAt(filaSeleccionada, 1);
             txt_descripcion.setText(descripcion);
         }
     }//GEN-LAST:event_jTable_categoriasMouseClicked
