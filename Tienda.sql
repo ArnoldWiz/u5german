@@ -61,7 +61,7 @@ VALUES
 
 create table producto(
 idProducto int (11) auto_increment primary key,
-codigo int(12)	not null,
+codigo int(20)	not null,
 nombre varchar(100) not null,
 cantidad int(11) not null,
 precio double(10,2) not null,
@@ -327,16 +327,20 @@ CREATE TABLE auditoria_ventas (
     idUsuario varchar(50),
     detalles VARCHAR(255)
 );
+
+<<<<<<< HEAD
+
+
 DELIMITER $$
 
-
-
+=======
 DELIMITER $$
-
+>>>>>>> 0984c16edc376b2da6df2805666a0e8a3acc6f7e
 CREATE TRIGGER auditoria_ventas_insert
 AFTER INSERT ON venta
 FOR EACH ROW
 BEGIN
+<<<<<<< HEAD
     DECLARE nombre_usuario VARCHAR(100);
     DECLARE apellido_usuario VARCHAR(100);
     DECLARE detalles_cambio VARCHAR(255);
@@ -346,7 +350,24 @@ BEGIN
     SET detalles_cambio = CONCAT('Venta insertada: ', NEW.idVenta);
     INSERT INTO auditoria_ventas (idVenta, accion, fechaCambio, idUsuario, detalles)
     VALUES (NEW.idVenta, 'INSERT', NOW(), CONCAT(nombre_usuario, ' ', apellido_usuario), detalles_cambio);
+=======
+    DECLARE detalles_cambio VARCHAR(255);
+    DECLARE nombre_completo VARCHAR(255);
+    
+    -- Obtener el nombre completo del usuario asociado a la venta
+    SET nombre_completo = (SELECT CONCAT(nombre, ' ', apellido) 
+                           FROM usuario 
+                           WHERE idUsuario = NEW.idUsuario);
+    
+    -- Crear el mensaje para la auditoría
+    SET detalles_cambio = CONCAT('Venta insertada: ', NEW.idVenta, ' por ', nombre_completo);
+    
+    -- Insertar en la tabla auditoria_ventas
+    INSERT INTO auditoria_ventas (idVenta, accion, fechaCambio, idUsuario, detalles)
+    VALUES (NEW.idVenta, 'INSERT', NOW(), NEW.idUsuario, detalles_cambio);
+>>>>>>> 0984c16edc376b2da6df2805666a0e8a3acc6f7e
 END $$
+
 DELIMITER ;
 
 
@@ -377,7 +398,6 @@ BEGIN
     VALUES (OLD.idVenta, 'DELETE', NOW(), current_user(), detalles_cambio);
 END $$
 DELIMITER ;
-
 
 DELIMITER $$
 CREATE TRIGGER validacion_producto_insert
@@ -429,3 +449,5 @@ BEGIN
     RETURN cantidad;
 END $$
 DELIMITER ;
+
+
