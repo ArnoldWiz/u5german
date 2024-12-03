@@ -15,8 +15,12 @@ import modelos.Categoria;
  * @author barre
  */
 public class DaoCategoria {
+<<<<<<< HEAD
     
     // metodo para cargar todas las categorias
+=======
+
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public JComboBox<String> CargarComboCategorias(JComboBox<String> jComboBox_categoria) {
         Connection cn = Conexion.conectar();
         String sql = "SELECT * FROM categoria";
@@ -38,7 +42,10 @@ public class DaoCategoria {
         return jComboBox_categoria;
     }
 
+<<<<<<< HEAD
     // metodo para recuperar idcategoria
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public int IdCategoria(String categoria) {
         int obtenerIdCategoriaCombo = 0;
         String sql = "SELECT idCategoria FROM categoria WHERE descripcion = ?";
@@ -56,8 +63,12 @@ public class DaoCategoria {
         }
         return obtenerIdCategoriaCombo;
     }
+<<<<<<< HEAD
     
     // metodo para guardar categoria
+=======
+
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public boolean guardar(Categoria objeto) {
         boolean respuesta = false;
         String sql = "INSERT INTO categoria (idCategoria, descripcion, estado) VALUES (NULL, ?, ?)";
@@ -99,7 +110,10 @@ public class DaoCategoria {
         return respuesta;
     }
     
+<<<<<<< HEAD
     // metodo para guardar categoria(objeto)
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public boolean guardar2(Categoria objeto) {
         boolean respuesta = false;
         String sql = "UPDATE categoria SET estado=1 where descripcion=?";
@@ -138,8 +152,12 @@ public class DaoCategoria {
         }
         return respuesta;
     }
+<<<<<<< HEAD
     
     // metodo para comprobar si existe
+=======
+
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public boolean existeCategoria(String categoria) {
         boolean respuesta = false;
         String sql = "SELECT descripcion FROM categoria WHERE descripcion = ?";
@@ -157,8 +175,12 @@ public class DaoCategoria {
         }
         return respuesta;
     }
+<<<<<<< HEAD
     
     // metodo para recuperar una categoria
+=======
+
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public Categoria obtenerCategoria(String descripcionCategoria) {
         Categoria categoria = null;
         String sql = "SELECT * FROM categoria WHERE descripcion = ?";
@@ -179,7 +201,10 @@ public class DaoCategoria {
         return categoria;
     }
 
+<<<<<<< HEAD
     // metodo para buscar por id
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public String buscarDescripcionCategoria(int categoria) {
         String descripcionEncontrada = null;
         String sql = "SELECT descripcion FROM categoria WHERE idCategoria = ?";
@@ -199,7 +224,10 @@ public class DaoCategoria {
         return descripcionEncontrada;
     }
 
+<<<<<<< HEAD
     // metodo para actualizar categopria
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public boolean actualizar(Categoria objeto, int idCategoria, int estado) {
         boolean respuesta = false;
         String sql = "UPDATE categoria SET descripcion = ?, estado = ? WHERE idCategoria = ?";
@@ -241,8 +269,12 @@ public class DaoCategoria {
         }
         return respuesta;
     }
+<<<<<<< HEAD
     
     // metodo para cargar la tabla
+=======
+
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public void cargarTablaCategorias(DefaultTableModel model) {
         Connection con = null;
         String sql = "SELECT idCategoria, descripcion, estado FROM categoria";
@@ -277,8 +309,12 @@ public class DaoCategoria {
             System.out.println("Error al cargar la tabla de categorías: " + e);
         }
     }
+<<<<<<< HEAD
     
     // metodo para recuperar datos de la categoria
+=======
+
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public void enviarDatosCategoriaSeleccionada(int idCategoria, Categoria categoria) {
         Connection con = null;
         try {
@@ -310,7 +346,10 @@ public class DaoCategoria {
         }
     }
 
+<<<<<<< HEAD
     // metodo para recuperar tabla
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public DefaultTableModel cargarTablaCategorias() {
         Connection con = null;
         DefaultTableModel model = new DefaultTableModel();
@@ -353,7 +392,11 @@ public class DaoCategoria {
 
         return model;
     }
+<<<<<<< HEAD
     // metodo para obtener categoria por id
+=======
+
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public Categoria obtenerCategoriaPorId(int idCategoria) {
         Connection con = null;
         Categoria categoria = null;

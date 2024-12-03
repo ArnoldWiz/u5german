@@ -5,9 +5,12 @@ package modelos;
  */
 public class DetalleVenta {
 
+<<<<<<< HEAD
     //se declaran los atibutos
     
     
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     private int idDetalleVenta;
     private int idVenta;
     private int idProducto;
@@ -21,7 +24,10 @@ public class DetalleVenta {
     private double totalPagar;
     private int estado;
 
+<<<<<<< HEAD
     //constructores
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public DetalleVenta() {
         this.idDetalleVenta = 0;
         this.idVenta = 0;
@@ -50,8 +56,11 @@ public class DetalleVenta {
         this.estado = estado;
     }
 
+<<<<<<< HEAD
     
     // getters y setters
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public int getIdDetalleVenta() {
         return idDetalleVenta;
     }

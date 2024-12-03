@@ -234,4 +234,11 @@ public class GestionarClientes extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txt_descripcion;
     // End of variables declaration//GEN-END:variables
 
+<<<<<<< HEAD
+=======
+    private void EnviarDatosCategoriaSeleccionada(int idCategoria) {
+        DaoCategoria daoCategoria = new DaoCategoria();
+        Categoria categoria = daoCategoria.obtenerCategoriaPorId(idCategoria);
+    }
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
 }

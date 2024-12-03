@@ -13,7 +13,10 @@ import modelos.Usuario;
  */
 public class DaoUsuario {
 
+<<<<<<< HEAD
     // metodo para guardar usuario 
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public boolean guardar(Usuario objeto) {
         boolean respuesta = false;
         String sql = "INSERT INTO usuario (nombre, apellido, usuario, password, telefono, tipo) "
@@ -46,7 +49,10 @@ public class DaoUsuario {
         return respuesta;
     }
 
+<<<<<<< HEAD
     // metodo para comprobar
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public boolean existeUsuario(String usuario) {
         boolean respuesta = false;
         String sql = "SELECT 1 FROM usuario WHERE usuario = ?";
@@ -70,7 +76,10 @@ public class DaoUsuario {
         return respuesta;
     }
 
+<<<<<<< HEAD
     // metodo para  actualizar
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public boolean actualizar(Usuario objeto, int idUsuario) {
         boolean respuesta = false;
         String sql = "UPDATE usuario SET nombre = ?, apellido = ?, usuario = ?, password = SHA2(?, 256), telefono = ?, tipo = ? "
@@ -103,7 +112,10 @@ public class DaoUsuario {
         return respuesta;
     }
 
+<<<<<<< HEAD
     // metodo para eliminar usuario
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public boolean eliminar(int idUsuario) {
         boolean respuesta = false;
         String sql = "DELETE FROM usuario WHERE idUsuario = ?";
@@ -129,7 +141,10 @@ public class DaoUsuario {
         return respuesta;
     }
 
+<<<<<<< HEAD
     // metodo para  buscar usuario por nombre
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public Usuario buscarUsuario(String usuario) {
         Usuario usuarioEncontrado = null;
         String sql = "SELECT * FROM usuario WHERE usuario = ?";
@@ -158,7 +173,10 @@ public class DaoUsuario {
         return usuarioEncontrado;
     }
 
+<<<<<<< HEAD
     // metodo para iniciar sesion
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public boolean loginUser(Usuario objeto) {
         boolean respuesta = false;
         String sql = "SELECT usuario, password FROM usuario WHERE usuario = ? AND password = SHA2(?, 256)";
@@ -180,7 +198,10 @@ public class DaoUsuario {
         return respuesta;
     }
 
+<<<<<<< HEAD
     // metodo para buiscar usuario
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public Usuario recuperarUs(Usuario objeto) {
         try (Connection cn = Conexion.conectar()) {
             String sql = "SELECT tipo FROM usuario WHERE usuario = ? AND password = SHA2(?, 256)";

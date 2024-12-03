@@ -6,9 +6,12 @@ package modelos;
  */
 public class Producto {
     
+<<<<<<< HEAD
     //se declaran los atibutos
     
     
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     private int idProducto;
     private String nombre;
     private int cantidad;
@@ -20,7 +23,10 @@ public class Producto {
     private int codigo;
     private int minimo;
     
+<<<<<<< HEAD
     //constructores
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public Producto(){
         this.idProducto = 0;
         this.nombre = "";
@@ -47,8 +53,11 @@ public class Producto {
         this.minimo=minimo;
     }
 
+<<<<<<< HEAD
     
     // getters y setters
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public int getMinimo() {
         return minimo;
     }

@@ -199,8 +199,11 @@ public class Registro extends javax.swing.JFrame {
     private javax.swing.JTextField txtTelefono;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
+<<<<<<< HEAD
     
     // metodo para recuperar datops y hacer registro
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     private void registro() {
         if (!txtUsuario.getText().isEmpty() && !txtPass.getText().isEmpty() && 
                 !txtNombre.getText().isEmpty() && !txtApellido.getText().isEmpty()
@@ -229,7 +232,10 @@ public class Registro extends javax.swing.JFrame {
         }
     }
     
+<<<<<<< HEAD
     // metodo para recuperar datos y hacer actualizacion
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     private void actualizar() {
         if (!txtUsuario.getText().isEmpty() && !txtPass.getText().isEmpty() && 
                 !txtNombre.getText().isEmpty() && !txtApellido.getText().isEmpty()

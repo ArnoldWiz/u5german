@@ -15,7 +15,10 @@ import modelos.Producto;
  */
 public class DaoProducto {
 
+<<<<<<< HEAD
     // metodo para guardar proiducto
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public boolean guardar(Producto objeto, String categoria) {
         boolean respuesta = false;
         Connection cn = Conexion.conectar();
@@ -63,7 +66,10 @@ public class DaoProducto {
         return respuesta;
     }
 
+<<<<<<< HEAD
     // metodo para comprobar existencia
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public boolean existeProducto(String producto) {
         boolean respuesta = false;
         String sql = "SELECT codigo FROM producto WHERE codigo = ?";
@@ -82,7 +88,10 @@ public class DaoProducto {
         return respuesta;
     }
 
+<<<<<<< HEAD
     // metodo para comprobar existencia por codigo
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public boolean existeProductoCodigo(String codigo) {
         boolean respuesta = false;
         String sql = "SELECT nombre FROM producto WHERE codigo = ?";
@@ -101,7 +110,10 @@ public class DaoProducto {
         return respuesta;
     }
 
+<<<<<<< HEAD
     // metodo para buscar regresa producto
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public Producto buscarProductoPorCodigo(String codigo) {
         Producto producto = null;
         String sql = "SELECT * FROM producto WHERE codigo = ?";
@@ -132,7 +144,10 @@ public class DaoProducto {
         return producto;
     }
 
+<<<<<<< HEAD
     // metodo para actualizar producto
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public boolean actualizar(Producto objeto, int idProducto) {
         boolean respuesta = false;
         Connection cn = Conexion.conectar();
@@ -176,7 +191,10 @@ public class DaoProducto {
         return respuesta;
     }
 
+<<<<<<< HEAD
     // metodo para eliminar logico
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public boolean desactivarProductoPorCodigo(int codigo) {
         boolean actualizado = false;
         String sql = "UPDATE producto SET estado = 0 WHERE codigo = ?";
@@ -195,7 +213,10 @@ public class DaoProducto {
         return actualizado;
     }
 
+<<<<<<< HEAD
     // metodo para cargar todos los productos
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public DefaultTableModel cargarTablaProductos() {
         Connection con = null;
         DefaultTableModel model = new DefaultTableModel();
@@ -251,7 +272,10 @@ public class DaoProducto {
         return model; 
     }
     
+<<<<<<< HEAD
     // metodo para obtener el stock 
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
         public int obtenerStockProducto(int idProducto) {
         Connection cn = null;
         int stock = -1;
@@ -277,7 +301,11 @@ public class DaoProducto {
         }
         return stock;
     }
+<<<<<<< HEAD
         // metodo para actualizar stock
+=======
+        
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
         public boolean actualizarStock(int idProducto, int nuevoStock) {
         Connection cn = null;
         try {

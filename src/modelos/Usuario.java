@@ -6,9 +6,12 @@ package modelos;
  */
 public class Usuario {
 
+<<<<<<< HEAD
     //se declaran los atibutos
     
     
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     private int idUsuario;
     private String nombre;
     private String apellido;
@@ -17,7 +20,10 @@ public class Usuario {
     private String telefono;
     private int tipo;
 
+<<<<<<< HEAD
     //constructores
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public Usuario() {
         this.idUsuario = 0;
         this.nombre = "";
@@ -37,7 +43,10 @@ public class Usuario {
         this.tipo = tipo;
     }
 
+<<<<<<< HEAD
     // getters y setters
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public int getTipo() {
         return tipo;
     }

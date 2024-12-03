@@ -220,8 +220,11 @@ public class Cliente extends javax.swing.JInternalFrame {
      *
      * Metodo para limpiar campos
      */
+<<<<<<< HEAD
     
     // metodo para limpiar todos los campos
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     private void Limpiar() {
         txt_Telefono.setText("");
         txt_Nombre.setText("");

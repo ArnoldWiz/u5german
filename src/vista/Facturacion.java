@@ -329,7 +329,11 @@ public class Facturacion extends javax.swing.JInternalFrame {
                         this.DatosDelProducto();
 
                         int stockDisponible = p.obtenerStockProducto(idProducto);
+<<<<<<< HEAD
                         
+=======
+
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
                         if (cantidadIngresada <= stockDisponible) {
                             boolean productoExiste = false;
                             for (DetalleVenta dv : listaProductos) {
@@ -350,7 +354,11 @@ public class Facturacion extends javax.swing.JInternalFrame {
                                         break;
                                     } else {
                                         JOptionPane.showMessageDialog(null, "No hay suficiente stock disponible.");
+<<<<<<< HEAD
                                         return;
+=======
+                                        return; 
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
                                     }
                                 }
                             }
@@ -365,6 +373,10 @@ public class Facturacion extends javax.swing.JInternalFrame {
                                     auxIdDetalle++;
                                 }
                             }
+<<<<<<< HEAD
+=======
+                            p.actualizarStock(idProducto, stockDisponible - cantidadIngresada);
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
                             this.CalcularTotalPagar();
                         } else {
                             JOptionPane.showMessageDialog(null, "No hay suficiente stock disponible.");
@@ -419,14 +431,24 @@ public class Facturacion extends javax.swing.JInternalFrame {
                 );
 
                 switch (opcion) {
+<<<<<<< HEAD
                     case JOptionPane.YES_OPTION:
+=======
+                    case JOptionPane.YES_OPTION: 
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
                         listaProductos.remove(idArrayList - 1);
                         CalcularTotalPagar();
                         listaTablaProductos();
                         break;
+<<<<<<< HEAD
                     case JOptionPane.NO_OPTION:
                         break;
                     default:
+=======
+                    case JOptionPane.NO_OPTION: 
+                        break;
+                    default: 
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
                         break;
                 }
             }
@@ -457,7 +479,11 @@ public class Facturacion extends javax.swing.JInternalFrame {
             for (DetalleVenta elemento : listaProductos) {
                 DetalleVenta detalleVenta = new DetalleVenta();
                 detalleVenta.setIdDetalleVenta(0);
+<<<<<<< HEAD
                 detalleVenta.setIdVenta(0);
+=======
+                detalleVenta.setIdVenta(0); 
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
                 detalleVenta.setIdProducto(elemento.getIdProducto());
                 detalleVenta.setCantidad(elemento.getCantidad());
                 detalleVenta.setPrecioUnitario(elemento.getPrecioUnitario());
@@ -537,13 +563,19 @@ public class Facturacion extends javax.swing.JInternalFrame {
     public static javax.swing.JTextField txt_total_pagar;
     // End of variables declaration//GEN-END:variables
 
+<<<<<<< HEAD
     // metodo para cargar clientes
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public void cargarClientes() {
         DaoCliente c = new DaoCliente();
         jClientes = c.CargarComboClientes(jClientes);
     }
 
+<<<<<<< HEAD
     // metodo para validar entero
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     private boolean validar(String valor) {
         try {
             int num = Integer.parseInt(valor);
@@ -553,7 +585,10 @@ public class Facturacion extends javax.swing.JInternalFrame {
         }
     }
 
+<<<<<<< HEAD
     // metodo para validar double
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     private boolean validarDouble(String valor) {
         try {
             double num = Double.parseDouble(valor);
@@ -563,13 +598,19 @@ public class Facturacion extends javax.swing.JInternalFrame {
         }
     }
 
+<<<<<<< HEAD
     // metodo para calcular iva
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     private double CalcularIva(double precio) {
         iva = (precio * cantidad) * 0.16;
         return iva;
     }
 
+<<<<<<< HEAD
     // metodo para calcular total
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     private void CalcularTotalPagar() {
         subtotalGeneral = 0;
         descuentoGeneral = 0;
@@ -591,17 +632,25 @@ public class Facturacion extends javax.swing.JInternalFrame {
         txt_total_pagar.setText(String.valueOf(totalPagarGeneral));
     }
 
+<<<<<<< HEAD
     // metodo para restar stock
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     private void RestarStockProductos(int idProducto, int cantidad) {
         Connection cn = null;
         int cantidadProductosBaseDeDatos = 0;
         try {
             cn = Conexion.conectar();
             cn.setAutoCommit(false);
+<<<<<<< HEAD
+=======
+
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
             String sql = "SELECT cantidad, minimo FROM producto WHERE idProducto = ?";
             PreparedStatement pst = cn.prepareStatement(sql);
             pst.setInt(1, idProducto);
             ResultSet rs = pst.executeQuery();
+<<<<<<< HEAD
 
             if (!rs.next()) {
                 JOptionPane.showMessageDialog(null, "Producto no encontrado.");
@@ -618,11 +667,22 @@ public class Facturacion extends javax.swing.JInternalFrame {
                 return;
             }
 
+=======
+            if (rs.next()) {
+                cantidadProductosBaseDeDatos = rs.getInt("cantidad");
+                if (rs.getInt("minimo") > cantidadProductosBaseDeDatos) {
+                    JOptionPane.showMessageDialog(null, "Se ha superado el mínimo de stock.");
+                    cn.rollback();
+                    return;
+                }
+            }
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
             String updateSql = "UPDATE producto SET cantidad = ? WHERE idProducto = ?";
             PreparedStatement updateStmt = cn.prepareStatement(updateSql);
             int cantidadNueva = cantidadProductosBaseDeDatos - cantidad;
             updateStmt.setInt(1, cantidadNueva);
             updateStmt.setInt(2, idProducto);
+<<<<<<< HEAD
 
             if (updateStmt.executeUpdate() > 0) {
                 cn.commit();
@@ -633,6 +693,10 @@ public class Facturacion extends javax.swing.JInternalFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Error al actualizar el stock.");
                 cn.rollback();
+=======
+            if (updateStmt.executeUpdate() > 0) {
+                cn.commit();
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
             }
         } catch (SQLException e) {
             try {
@@ -655,7 +719,10 @@ public class Facturacion extends javax.swing.JInternalFrame {
         }
     }
 
+<<<<<<< HEAD
     // metodo para obtener datos del producto
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     private void DatosDelProducto() {
         Connection cn = null;
         try {

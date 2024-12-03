@@ -6,14 +6,20 @@ package modelos;
  */
 public class Categoria {
     
+<<<<<<< HEAD
     //se declaran los atibutos
     
     
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     private int idCategoria;
     private String descripcion;
     private int estado;
     
+<<<<<<< HEAD
     //constructores
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public Categoria(){
         this.idCategoria = 0;
         this.descripcion = "";
@@ -25,8 +31,11 @@ public class Categoria {
         this.descripcion = descripcion;
         this.estado = estado;
     }
+<<<<<<< HEAD
     
     // getters y setters
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
 
     public int getIdCategoria() {
         return idCategoria;

@@ -446,8 +446,11 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblHora;
     // End of variables declaration//GEN-END:variables
+<<<<<<< HEAD
     
     // metodo para saber la hopra actual
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     private void hora() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         String currentDateTime = sdf.format(new Date());

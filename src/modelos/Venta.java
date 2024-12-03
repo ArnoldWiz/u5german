@@ -4,10 +4,13 @@ package modelos;
  * @author barre
  */
 public class Venta {
+<<<<<<< HEAD
     
     //se declaran los atibutos
     
     
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     private int idventa;
     private double valorPagar;
     private int idUsuario;
@@ -15,8 +18,11 @@ public class Venta {
     private String fechaVenta;
     private int estado;
     
+<<<<<<< HEAD
     
     //constructores
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public Venta(){
         this.idventa = 0;
         this.valorPagar = 0.0;
@@ -33,7 +39,10 @@ public class Venta {
         this.estado = estado;
     }
 
+<<<<<<< HEAD
     // getters y setters
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public int getIdUsuario() {
         return idUsuario;
     }

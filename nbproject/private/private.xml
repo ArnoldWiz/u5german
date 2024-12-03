@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/barre/Downloads/u5german-main/src/modelos/Cliente.java</file>
             <file>file:/C:/Users/barre/Downloads/u5german-main/src/modelos/Producto.java</file>
             <file>file:/C:/Users/barre/Downloads/u5german-main/src/modelos/Usuario.java</file>
@@ -33,6 +34,18 @@
             <file>file:/C:/Users/barre/Downloads/u5german-main/src/vista/GestionarUsua.java</file>
             <file>file:/C:/Users/barre/Downloads/u5german-main/src/daos/DaoCategoria.java</file>
             <file>file:/C:/Users/barre/Downloads/u5german-main/src/vista/ReporteMes.java</file>
+=======
+            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/Producto.java</file>
+            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/GestionarProdcutos.java</file>
+            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/Registro.java</file>
+            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/GestionarUsua.java</file>
+            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/GestionarClientes.java</file>
+            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/Menu.java</file>
+            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/GestionarCategoria.java</file>
+            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/Facturacion.java</file>
+            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/Login.java</file>
+            <file>file:/D:/Usuarios/Arnold/Documents/NetBeansProjects/Projectov5/src/vista/ReporteEmpleado.java</file>
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
         </group>
     </open-files>
 </project-private>

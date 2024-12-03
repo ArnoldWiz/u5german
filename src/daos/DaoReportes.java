@@ -24,7 +24,10 @@ import java.util.Date;
  */
 public class DaoReportes {
 
+<<<<<<< HEAD
     // metodo para realizar los reportes en pdf
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public void ReporteVentasConDetalles(Date fechaInicio, Date fechaFin) {
         Document documento = new Document();
         Connection cn = null;
@@ -96,7 +99,10 @@ public class DaoReportes {
         documento.close();
     }
 
+<<<<<<< HEAD
     // metodo para reportes en pdf mes
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public void ReporteMes(Date fecha) {
         Document documento = new Document();
         Connection cn = null;
@@ -174,7 +180,10 @@ public class DaoReportes {
         documento.close();
     }
 
+<<<<<<< HEAD
     // metodo para realizar los reportes en pdf empleado
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public void ReporteEmpleado(Date fecha) {
         Document documento = new Document();
         Connection cn = null;
@@ -248,7 +257,10 @@ public class DaoReportes {
         documento.close();
     }
 
+<<<<<<< HEAD
     // metodo para realizar los reportes en pdf trimestres
+=======
+>>>>>>> a33e09ef76daf7770e51bc5495a079d747fcb6eb
     public void ReporteTrimestres(int anio) {
         Document documento = new Document();
         Connection cn = null;
