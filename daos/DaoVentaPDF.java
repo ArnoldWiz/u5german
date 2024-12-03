@@ -30,6 +30,7 @@ public class DaoVentaPDF {
     private String fechaActual = "";
     private String nombreArchivoPDFVenta = "";
 
+    // metodo para generar el ticket
     public void generarFacturaPDF() {
         Conexion cn = null;
 

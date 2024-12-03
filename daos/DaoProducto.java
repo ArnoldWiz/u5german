@@ -15,6 +15,7 @@ import modelos.Producto;
  */
 public class DaoProducto {
 
+    // metodo para guardar proiducto
     public boolean guardar(Producto objeto, String categoria) {
         boolean respuesta = false;
         Connection cn = Conexion.conectar();
@@ -62,6 +63,7 @@ public class DaoProducto {
         return respuesta;
     }
 
+    // metodo para comprobar existencia
     public boolean existeProducto(String producto) {
         boolean respuesta = false;
         String sql = "SELECT codigo FROM producto WHERE codigo = ?";
@@ -80,6 +82,7 @@ public class DaoProducto {
         return respuesta;
     }
 
+    // metodo para comprobar existencia por codigo
     public boolean existeProductoCodigo(String codigo) {
         boolean respuesta = false;
         String sql = "SELECT nombre FROM producto WHERE codigo = ?";
@@ -98,6 +101,7 @@ public class DaoProducto {
         return respuesta;
     }
 
+    // metodo para buscar regresa producto
     public Producto buscarProductoPorCodigo(String codigo) {
         Producto producto = null;
         String sql = "SELECT * FROM producto WHERE codigo = ?";
@@ -128,6 +132,7 @@ public class DaoProducto {
         return producto;
     }
 
+    // metodo para actualizar producto
     public boolean actualizar(Producto objeto, int idProducto) {
         boolean respuesta = false;
         Connection cn = Conexion.conectar();
@@ -171,6 +176,7 @@ public class DaoProducto {
         return respuesta;
     }
 
+    // metodo para eliminar logico
     public boolean desactivarProductoPorCodigo(int codigo) {
         boolean actualizado = false;
         String sql = "UPDATE producto SET estado = 0 WHERE codigo = ?";
@@ -189,6 +195,7 @@ public class DaoProducto {
         return actualizado;
     }
 
+    // metodo para cargar todos los productos
     public DefaultTableModel cargarTablaProductos() {
         Connection con = null;
         DefaultTableModel model = new DefaultTableModel();
@@ -244,6 +251,7 @@ public class DaoProducto {
         return model; 
     }
     
+    // metodo para obtener el stock 
         public int obtenerStockProducto(int idProducto) {
         Connection cn = null;
         int stock = -1;
@@ -269,7 +277,7 @@ public class DaoProducto {
         }
         return stock;
     }
-        
+        // metodo para actualizar stock
         public boolean actualizarStock(int idProducto, int nuevoStock) {
         Connection cn = null;
         try {

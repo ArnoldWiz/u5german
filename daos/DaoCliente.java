@@ -21,6 +21,7 @@ import modelos.Cliente;
  */
 public class DaoCliente {
 
+    // metodo para obtener cliente por nombre
     public int ObtenerIdClientePorNombre(String nombreCliente) {
         Connection cn = Conexion.conectar(); 
         String sql = "SELECT idCliente FROM clientes WHERE nombre = ? AND estado = 1";
@@ -40,6 +41,7 @@ public class DaoCliente {
         return idCliente;
     }
 
+    // metodo para cargar todos los clientes
     public JComboBox<String> CargarComboClientes(JComboBox<String> jComboBox_cliente) {
         Connection cn = Conexion.conectar(); 
         String sql = "SELECT * FROM clientes";
@@ -102,6 +104,7 @@ public class DaoCliente {
         return false;
     }
 
+    // metodo para buscar cliente por nombre
     public Cliente buscarClientePorNombre(String nombre) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -151,6 +154,7 @@ public class DaoCliente {
         return cliente;
     }
 
+    // metodo para insertar cliente
     public void insertarCliente(String nombre, String telefono, String direccion, String email, String rfc) {
         Connection connection = null;
         CallableStatement callableStatement = null;
@@ -189,6 +193,7 @@ public class DaoCliente {
         }
     }
 
+    // metodo para actualizar cliente
     public void actualizarCliente(String nombre, String telefono, String direccion, String email, String rfc) {
         Connection connection = null;
         CallableStatement callableStatement = null;
@@ -227,6 +232,7 @@ public class DaoCliente {
         }
     }
 
+    // metodo para eliminar cliente logico
     public void eliminarCliente(String nombre) {
         Connection connection = null;
         CallableStatement callableStatement = null;
@@ -260,6 +266,7 @@ public class DaoCliente {
         }
     }
 
+    // metodo para restaurar el eliminado logico
     public void restaurarCliente(String nombre) {
         Connection connection = null;
         CallableStatement callableStatement = null;
@@ -293,6 +300,7 @@ public class DaoCliente {
         }
     }
 
+    // metodo para cargar rabkla con los clientes
     public DefaultTableModel cargarTablaClientes() {
         Connection con = null;
         DefaultTableModel model = new DefaultTableModel();

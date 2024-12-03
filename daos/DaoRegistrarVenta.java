@@ -19,6 +19,7 @@ public class DaoRegistrarVenta {
     public static int idCabeceraRegistrada;
     java.math.BigDecimal iDColVar;
 
+    // metodo para registrar la venta con sus detalles
     public boolean guardarVentaCompleta(Venta venta, List<DetalleVenta> detalles) {
         boolean respuesta = false;
         Connection cn = Conexion.conectar();

@@ -15,7 +15,8 @@ import modelos.Categoria;
  * @author barre
  */
 public class DaoCategoria {
-
+    
+    // metodo para cargar todas las categorias
     public JComboBox<String> CargarComboCategorias(JComboBox<String> jComboBox_categoria) {
         Connection cn = Conexion.conectar();
         String sql = "SELECT * FROM categoria";
@@ -37,6 +38,7 @@ public class DaoCategoria {
         return jComboBox_categoria;
     }
 
+    // metodo para recuperar idcategoria
     public int IdCategoria(String categoria) {
         int obtenerIdCategoriaCombo = 0;
         String sql = "SELECT idCategoria FROM categoria WHERE descripcion = ?";
@@ -54,7 +56,8 @@ public class DaoCategoria {
         }
         return obtenerIdCategoriaCombo;
     }
-
+    
+    // metodo para guardar categoria
     public boolean guardar(Categoria objeto) {
         boolean respuesta = false;
         String sql = "INSERT INTO categoria (idCategoria, descripcion, estado) VALUES (NULL, ?, ?)";
@@ -96,6 +99,7 @@ public class DaoCategoria {
         return respuesta;
     }
     
+    // metodo para guardar categoria(objeto)
     public boolean guardar2(Categoria objeto) {
         boolean respuesta = false;
         String sql = "UPDATE categoria SET estado=1 where descripcion=?";
@@ -134,7 +138,8 @@ public class DaoCategoria {
         }
         return respuesta;
     }
-
+    
+    // metodo para comprobar si existe
     public boolean existeCategoria(String categoria) {
         boolean respuesta = false;
         String sql = "SELECT descripcion FROM categoria WHERE descripcion = ?";
@@ -152,7 +157,8 @@ public class DaoCategoria {
         }
         return respuesta;
     }
-
+    
+    // metodo para recuperar una categoria
     public Categoria obtenerCategoria(String descripcionCategoria) {
         Categoria categoria = null;
         String sql = "SELECT * FROM categoria WHERE descripcion = ?";
@@ -173,6 +179,7 @@ public class DaoCategoria {
         return categoria;
     }
 
+    // metodo para buscar por id
     public String buscarDescripcionCategoria(int categoria) {
         String descripcionEncontrada = null;
         String sql = "SELECT descripcion FROM categoria WHERE idCategoria = ?";
@@ -192,6 +199,7 @@ public class DaoCategoria {
         return descripcionEncontrada;
     }
 
+    // metodo para actualizar categopria
     public boolean actualizar(Categoria objeto, int idCategoria, int estado) {
         boolean respuesta = false;
         String sql = "UPDATE categoria SET descripcion = ?, estado = ? WHERE idCategoria = ?";
@@ -233,7 +241,8 @@ public class DaoCategoria {
         }
         return respuesta;
     }
-
+    
+    // metodo para cargar la tabla
     public void cargarTablaCategorias(DefaultTableModel model) {
         Connection con = null;
         String sql = "SELECT idCategoria, descripcion, estado FROM categoria";
@@ -268,7 +277,8 @@ public class DaoCategoria {
             System.out.println("Error al cargar la tabla de categorías: " + e);
         }
     }
-
+    
+    // metodo para recuperar datos de la categoria
     public void enviarDatosCategoriaSeleccionada(int idCategoria, Categoria categoria) {
         Connection con = null;
         try {
@@ -300,6 +310,7 @@ public class DaoCategoria {
         }
     }
 
+    // metodo para recuperar tabla
     public DefaultTableModel cargarTablaCategorias() {
         Connection con = null;
         DefaultTableModel model = new DefaultTableModel();
@@ -342,7 +353,7 @@ public class DaoCategoria {
 
         return model;
     }
-
+    // metodo para obtener categoria por id
     public Categoria obtenerCategoriaPorId(int idCategoria) {
         Connection con = null;
         Categoria categoria = null;

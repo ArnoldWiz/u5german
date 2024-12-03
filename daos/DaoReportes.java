@@ -24,6 +24,7 @@ import java.util.Date;
  */
 public class DaoReportes {
 
+    // metodo para realizar los reportes en pdf
     public void ReporteVentasConDetalles(Date fechaInicio, Date fechaFin) {
         Document documento = new Document();
         Connection cn = null;
@@ -95,6 +96,7 @@ public class DaoReportes {
         documento.close();
     }
 
+    // metodo para reportes en pdf mes
     public void ReporteMes(Date fecha) {
         Document documento = new Document();
         Connection cn = null;
@@ -172,6 +174,7 @@ public class DaoReportes {
         documento.close();
     }
 
+    // metodo para realizar los reportes en pdf empleado
     public void ReporteEmpleado(Date fecha) {
         Document documento = new Document();
         Connection cn = null;
@@ -245,6 +248,7 @@ public class DaoReportes {
         documento.close();
     }
 
+    // metodo para realizar los reportes en pdf trimestres
     public void ReporteTrimestres(int anio) {
         Document documento = new Document();
         Connection cn = null;
